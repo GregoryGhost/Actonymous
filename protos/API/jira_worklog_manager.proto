@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package jira_worklog_manager.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/empty.proto";
+
+// The jira worklog manager service definition.
+service JiraWorklogManager { 
+  // Get paginated products by pagination options.
+  rpc ListProducts (stream UserWorklogDto) returns (stream UserWorklogInfoDto);
+}
+
+// Dto to get a user worklog information.
+message UserWorklogDto {
+  // A jira settings which it need to get information.
+  JiraSettingsDto jira_settings = 1;
+
+  // A worklog filter.
+  FilterDto filter = 2;
+}
+
+// A jira settings which it need to get information.
+message JiraSettingsDto {
+  // A user auth token in JIRA.
+  string jira_auth_user_token = 1;
+}
+
+// A filter data.
+message FilterDto {
+  // Start worklog period.
+  google.protobuf.Timestamp start_period_date = 1;
+
+  // End worklog period.
+  google.protobuf.Timestamp end_period_date = 2;
+}
+
+// A User worklog information.
+message UserWorklogInfoDto {
+  oneof kind {
+    // It returns when something went wrong.
+    google.protobuf.NullValue null = 1;
+    // Jira user worklogs.
+    repeated UserWorklogItemDto worklogs = 2; 
+  }
+}
+
+// A user worklog on the task.
+message UserWorklogItemDto {
+  // A task code.
+  string task_code = 1;
+
+  // A task name.
+  string task_name = 2;
+
+  // The beginning of the working period on the task.
+  google.protobuf.Timestamp start_period_date = 3;
+
+  // End of the task period.
+  google.protobuf.Timestamp end_period_date = 4;
+
+  // Time spent on the task by user.
+  fixed64 time_spent = 5;
+}
