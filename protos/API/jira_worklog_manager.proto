@@ -59,6 +59,6 @@ message UserWorklogItemDto {
   // End of the task period.
   google.protobuf.Timestamp end_period_date = 4;
 
-  // Time spent on the task by user.
-  fixed64 time_spent = 5;
+  // Time spent on the task by user (in seconds).
+  fixed64 time_spent_seconds = 5;
 }
