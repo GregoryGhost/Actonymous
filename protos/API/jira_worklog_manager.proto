@@ -3,7 +3,7 @@ syntax = "proto3";
 package jira_worklog_manager.v1;
 
 import "google/protobuf/struct.proto";
-import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 // The jira worklog manager service definition.
 service JiraWorklogManager { 
@@ -41,8 +41,14 @@ message UserWorklogInfoDto {
     // It returns when something went wrong.
     google.protobuf.NullValue null = 1;
     // Jira user worklogs.
-    repeated UserWorklogItemDto worklogs = 2; 
+    UserWorklogsDto worklogs = 2; 
   }
+}
+
+// Jira user worklogs.
+message UserWorklogsDto {
+  // Worklogs.
+  repeated UserWorklogItemDto worklogs = 1;
 }
 
 // A user worklog on the task.
