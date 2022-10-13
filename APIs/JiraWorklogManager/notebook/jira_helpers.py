@@ -1,18 +1,32 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, Tuple, final
+from datetime import datetime
+from typing import Any, Optional, Tuple, final
 import jira_dtos
 
 from jira.resources import Issue
 
-def get_user_worklogs(issue: Issue, user_login: str, date_range: jira_dtos.DateRange) -> jira_dtos.JiraWorklogs:
+import dateutil.parser
+
+def is_intersected(worklog: Any, date_range: jira_dtos.DateRange) -> bool:
+    date = dateutil.parser.isoparse(worklog.created)
+
+    return date_range.start_date.timestamp() <= date.timestamp() <= date_range.end_date.timestamp()
+
+
+def get_user_worklogs(
+    issue: Issue, user_login: str, date_range: jira_dtos.DateRange
+) -> jira_dtos.JiraWorklogs:
     worklogs = issue.fields.worklog.worklogs
-    worklogs = filter(lambda x: x.author.name == user_login, worklogs)
+    worklogs = filter(
+        lambda x: x.author.name == user_login and is_intersected(x, date_range),
+        worklogs,
+    )
     worklogs = map(
-        lambda x: jira_dtos.UserWorklogInfo(
+        lambda x: jira_dtos.UserWorklogInfo(#TODO: split on different function
             comment=x.comment,
-            created_date=x.created,
-            time_spent_seconds=x.timeSpentSeconds,
+            created_date=dateutil.parser.isoparse(x.created),
+            time_spent_seconds=int(x.timeSpentSeconds),
         ),
         worklogs,
     )
@@ -21,7 +35,9 @@ def get_user_worklogs(issue: Issue, user_login: str, date_range: jira_dtos.DateR
     return worklogs
 
 
-def map_issues(issue: Issue, user_login: str, data_range: jira_dtos.DateRange) -> jira_dtos.JiraIssue:
+def map_issues(
+    issue: Issue, user_login: str, data_range: jira_dtos.DateRange
+) -> jira_dtos.JiraIssue:
     issue_code = issue.key
     issue_name = issue.fields.summary
     worklogs = get_user_worklogs(issue, user_login, data_range)

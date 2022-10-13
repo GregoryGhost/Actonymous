@@ -1,0 +1,100 @@
+\documentclass[11pt]{report}
+\usepackage[T1]{fontenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{indentfirst}
+\usepackage{sectsty}
+\usepackage{setspace}
+\usepackage{titlecaps}
+\usepackage{enumitem}
+\usepackage[a4paper, left=30mm,right=15mm,top=20mm, bottom=15mm]{geometry}
+\usepackage[utf8x]{inputenc}
+\usepackage{polyglossia}
+%
+\setdefaultlanguage{russian}
+\setmainfont{Times New Roman} 
+%
+\begin{document}%
+\begin{spacing}{1.5}
+\normalsize%
+\sectionfont{\fontsize{11}{11}\selectfont\MakeUppercase}
+\section*{\hfil Акт сдачи-приемки\hfil}%
+%
+	\setlength{\parindent}{0cm}
+	\setlength{\tabcolsep}{0pt}
+	\begin{tabular}{ 
+		p{125mm}
+		p{40mm}}
+	г. Москва & {{ data.act.approval_date }}\\%
+	\end{tabular}
+\end{spacing}
+%
+\setlength{\parindent}{0.7cm}
+
+Общество с ограниченной ответственностью {{data.contract_parties_info.customer.company_name}}, в лице {{data.contract_parties_info.customer.header_position.genitive}}
+{{data.contract_parties_info.customer.header_fullname_initials_in_end.genitive}}, именуемое в дальнейшем «Заказчик», и {{data.contract_parties_info.executor.header_position.nominative}} «{{data.contract_parties_info.executor.company_name}}»,
+именуемое в дальнейшем «Исполнитель», в лице {{data.contract_parties_info.executor.header_fullname.genitive}}, действующего
+на основании устава, с другой стороны, совместно именуемые в дальнейшем «Стороны»,
+составили настоящий Акт сдачи-приемки услуг по Дополнительному соглашению № {{ data.supplementary_agreement.number }} от
+{{ data.supplementary_agreement.approval_date}} к Договору № {{ data.contract.number }} от {{ data.contract.approval_date }} (далее – Договор) о
+нижеследующем:
+%
+\setlist[enumerate,itemize]{leftmargin=10pt,itemindent=0em}
+\begin{enumerate}
+  \setlength{\parindent}{0cm}
+  \item Исполнитель выполнил следующие услуги по Договору:
+%
+
+\renewcommand{\arraystretch}{1.5}
+\setlength{\parindent}{0cm}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{|
+    >{\centering\arraybackslash} p{3mm} |
+    >{\arraybackslash} p{130mm} |
+    >{\centering\arraybackslash} p{20mm} |}
+    \hline%
+    {\textbf{№}}&\multicolumn{1}{c|}{\textbf{Наименование услуг (объем, перечень)}}&{\textbf{Затраченное время (часы)}}\\%
+    \hline%
+    {% for record in data.act_records %}
+      {{ record.column_number }}&{{ record.service_name }}&{{ record.time_spent_in_hours }}\\%
+      \hline%
+    {% endfor %}
+    \multicolumn{2}{|r|}{\textbf{Стоимость, руб.: {{ data.work_info.exact_work_cost }} руб. }}&{\textbf{
+      {{ data.work_info.total_spent_hours }}
+    }}\\%
+    \hline%
+\end{tabular}
+%
+  \item  Общая стоимость выполненных услуг составляет {{ data.work_info.work_cost_in_words }}, НДС не облагается в связи с применением Исполнителем упрощенной системы налогообложения.
+  \item Заказчик производит оплату услуг в порядке, установленном Дополнительным соглашением №
+{{ data.supplementary_agreement.number }} от {{ data.supplementary_agreement.approval_date }} .
+  \item Подписанием настоящего Акта Стороны подтверждают надлежащее выполнение условий
+Договора. Претензий Стороны не имеют.
+  \item Настоящий Акт составлен в двух экземплярах. Один экземпляр хранится у Исполнителя,
+другой – у Заказчика.
+  \item Подписи Сторон:
+%
+
+	\setlength{\parindent}{0cm}
+	\setlength{\tabcolsep}{4pt}
+	\begin{tabular}{p{60mm}
+		@{\hspace{30mm}} p{60mm}}
+	{\textbf{ЗАКАЗЧИК}}							          &{\textbf{ИСПОЛНИТЕЛЬ}}\\%
+	{\textbf{
+    {{data.contract_parties_info.customer.header_position.nominative}}
+  }}&{\textbf{
+    {{data.contract_parties_info.executor.header_position.nominative}}
+  }}\\%
+	{\textbf{
+    {{data.contract_parties_info.customer.initial_company_name}}
+  }}&{\textbf{
+    {{data.contract_parties_info.executor.initial_company_name}}
+  }}\\%
+	{\textbf{\hrulefill/ {{data.contract_parties_info.customer.header_fullname_initials_in_front.nominative}} /}} 	
+  &{\textbf{\hrulefill/ {{data.contract_parties_info.executor.header_fullname_initials_in_front.nominative}} /}}\\%
+	\end{tabular}
+\end{enumerate}
+\end{document}

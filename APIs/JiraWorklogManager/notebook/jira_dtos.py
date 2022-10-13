@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 from datetime import datetime
 import json
+from time import strftime
 from typing import List, Tuple, final
+from dataclasses_json import dataclass_json
 
 
 @final
@@ -60,13 +62,14 @@ class JiraInfo:
         self.basic_auth = basic_auth
 
 
-@final
+@dataclass
+@dataclass_json
 class UserWorklogItemDto:
-    task_code: str = ""
-    task_name: str = ""
-    start_period_date: datetime = None  # type: ignore
-    end_period_date: datetime = None  # type: ignore
-    time_spent_seconds: int = 0
+    task_code: str
+    task_name: str
+    start_period_date: datetime
+    end_period_date: datetime
+    time_spent_seconds: int
 
     def __init__(
         self,
@@ -82,11 +85,6 @@ class UserWorklogItemDto:
         self.end_period_date = end_period_date
         self.time_spent_seconds = time_spent_seconds
 
-
-@final
-class UserWorklogItemDtoEncoder(json.JSONEncoder):
-    def default(self, o: UserWorklogItemDto):
-        return o.__dict__
 
 @final
 @dataclass

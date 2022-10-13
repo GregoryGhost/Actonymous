@@ -1,0 +1,76 @@
+\documentclass{report}
+\usepackage[T1]{fontenc}%
+\usepackage[utf8x]{inputenc}
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setmainfont{Times New Roman} 
+%
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{indentfirst}
+\usepackage{sectsty}
+\usepackage{setspace}
+\usepackage[a4paper, left=30mm,right=15mm,top=20mm, bottom=15mm]{geometry}
+%
+\begin{document}%
+\Large
+\section*{\hfil Задание \\\centering{на выполнение работ}\hfil}%
+%
+	\large
+	\setlength{\parindent}{0cm}
+	\setlength{\tabcolsep}{0pt}
+	\begin{tabular}{ 
+		p{130mm}
+		p{35mm}}
+	г. Москва & {{ data.task.approval_date }}\\%
+	\end{tabular}
+%
+\setlength{\parindent}{1cm}
+\begin{spacing}{1.5}
+В соответствии с Договором № {{ data.contract.number }} от {{ data.contract.approval_date }} Исполнитель
+обязуется по заданию Заказчика выполнить следующие виды работ:
+\end{spacing}
+%
+\renewcommand{\arraystretch}{1.5}
+\setlength{\parindent}{0cm}
+\setlength{\tabcolsep}{4pt}
+\vspace*{-5pt}
+\begin{table}[h]
+\large
+\begin{tabular}{|
+	>{\centering\arraybackslash} p{5mm} |
+	>{\arraybackslash} p{115mm} |
+	>{\centering\arraybackslash} p{35mm} |}%
+\hline%
+№ &\multicolumn{1}{c|}{Наименование работ}& Период выполнения работ\\%
+\hline%
+    {% for record in data.task_records %}
+      {{ record.column_number }}&{{ record.service_name }}&{{ record.validity }}\\%
+      \hline%
+    {% endfor %}
+    &Общая стоимость работ&{{ data.work_info.exact_comma_work_cost }}\\%
+    \hline%
+\end{tabular}
+\end{table}
+%
+	\setlength{\parindent}{0cm}
+	\setlength{\tabcolsep}{0pt}
+	\vspace*{-5pt}
+	\begin{table}[h]
+	\large
+	\setlength{\parindent}{0.2cm}
+	\begin{tabular}[t]{
+		p{60mm} 
+		@{\hspace{30mm}} p{60mm}}
+	{\textbf{От имени заказчика}}
+		& {\textbf{От имени Исполнителя}}\\%
+	{{data.contract_parties_info.customer.header_position.nominative}} 
+		& {{data.contract_parties_info.executor.header_position.nominative}}\\%
+	{{data.contract_parties_info.customer.initial_company_name}}
+		& {{data.contract_parties_info.executor.initial_company_name}}\\%
+	\hrulefill {{data.contract_parties_info.customer.header_fullname_initials_in_front.nominative}}
+		& \hrulefill {{data.contract_parties_info.executor.header_fullname_initials_in_front.nominative}}\\%
+	\end{tabular}
+	\end{table}
+%
+\end{document}
