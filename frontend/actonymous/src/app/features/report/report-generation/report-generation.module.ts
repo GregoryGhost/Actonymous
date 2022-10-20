@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ReportGenerationRoutingModule } from './report-generation-routing.module';
 import { PageComponent } from './containers/page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiInputDateRangeModule } from '@taiga-ui/kit';
-import { TuiButtonModule } from '@taiga-ui/core';
+import { TuiFieldErrorPipeModule, TuiInputDateRangeModule } from '@taiga-ui/kit';
+import { TuiButtonModule, TuiErrorModule } from '@taiga-ui/core';
 
 
 @NgModule({
@@ -18,7 +18,9 @@ import { TuiButtonModule } from '@taiga-ui/core';
     TuiInputDateRangeModule,
     FormsModule,
     ReactiveFormsModule,
-    TuiButtonModule 
+    TuiButtonModule,
+    TuiErrorModule,
+    TuiFieldErrorPipeModule
   ]
 })
 export class ReportGenerationModule { }
