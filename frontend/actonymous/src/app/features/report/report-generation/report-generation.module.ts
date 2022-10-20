@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Type } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ReportGenerationRoutingModule } from './report-generation-routing.module';
@@ -7,10 +7,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiFieldErrorPipeModule, TuiInputDateRangeModule } from '@taiga-ui/kit';
 import { TuiButtonModule, TuiErrorModule } from '@taiga-ui/core';
 
+const COMPONENTS: [] = [];
+const CONTAINERS = [PageComponent];
 
 @NgModule({
   declarations: [
-    PageComponent
+    COMPONENTS,
+    CONTAINERS
   ],
   imports: [
     CommonModule,

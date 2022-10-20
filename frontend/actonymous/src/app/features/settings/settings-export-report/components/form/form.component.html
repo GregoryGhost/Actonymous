@@ -1,0 +1,33 @@
+<ng-container *ngIf="data === null ? invalidDataMsg : form"></ng-container>
+
+<ng-template #invalidDataMsg>
+  <div>Wrong data</div>
+</ng-template>
+
+<form class="b-form" [formGroup]="pageForm" (submit)="submit()" #form>
+  <div class="tui-container tui-container_adaptive">
+    <div class="tui-col-6">
+      <template-bindings></template-bindings>
+      <jira-credentials></jira-credentials>
+      <morpher></morpher>
+      <div class="tui-form__buttons">
+        <button
+          tuiButton
+          type="submit"
+          appearance="primary"
+          class="tui-form__button"
+        >
+          Save
+        </button>
+        <button
+          tuiButton
+          type="button"
+          appearance="accent"
+          class="tui-form__button"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

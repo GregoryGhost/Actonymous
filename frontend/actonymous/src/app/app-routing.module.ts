@@ -5,15 +5,22 @@ const routes: Routes = [
   {
     path: 'report-generation',
     loadChildren: () =>
-      import(
-        './features/report/report-generation'
-      ).then((m) => m.ReportGenerationModule),
+      import('./features/report/report-generation').then(
+        (m) => m.ReportGenerationModule
+      ),
+  },
+  {
+    path: 'settings',
+    loadChildren: () =>
+      import('./features/settings/settings-export-report').then(
+        (m) => m.SettingsExportReportModule
+      ),
   },
   {
     path: '',
     redirectTo: 'report-generation',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({

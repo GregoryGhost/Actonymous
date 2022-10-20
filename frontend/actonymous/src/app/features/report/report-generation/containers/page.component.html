@@ -1,7 +1,7 @@
 <form class="b-form" [formGroup]="pageForm" (submit)="submit()">
   <div class="tui-container tui-container_adaptive">
     <div class="tui-col-6">
-      <div class="tui-form__header form__title">Report</div>
+      <h3 class="tui-form__header form__title">Report</h3>
       <div class="tui-form__row tui-form__row_half-width">
         <tui-input-date-range
           tuiUnfinishedValidator="Finish filling the field"
@@ -19,7 +19,7 @@
         ></tui-error>
       </div>
       <div class="tui-form__buttons">
-        <button tuiButton type="submit" class="tui-form__button">
+        <button tuiButton type="submit" appearance="primary" class="tui-form__button">
           Generate
         </button>
       </div>
