@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class JiraCredentialsComponent implements OnInit {
 
+  public isPingingJiraServer: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public pingJiraServer(event: MouseEvent): void {
+    //TODO: raise event to ping jira server
   }
 
 }

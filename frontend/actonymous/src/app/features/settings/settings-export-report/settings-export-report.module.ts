@@ -10,8 +10,8 @@ import {
   TemplateBindingsComponent,
 } from './components/';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TuiButtonModule, TuiErrorModule } from '@taiga-ui/core';
-import { TuiFieldErrorPipeModule } from '@taiga-ui/kit';
+import { TuiButtonModule, TuiErrorModule, TuiLabelModule } from '@taiga-ui/core';
+import { TuiFieldErrorPipeModule, TuiInputModule } from '@taiga-ui/kit';
 
 const COMPONENTS = [
   FormComponent,
@@ -31,6 +31,8 @@ const CONTAINERS = [PageComponent];
     TuiButtonModule,
     TuiErrorModule,
     TuiFieldErrorPipeModule,
+    TuiLabelModule,
+    TuiInputModule
   ],
 })
 export class SettingsExportReportModule {}

@@ -1,6 +1,74 @@
 <h3 class="tui-form__header form__title">Template bindings</h3>
 <div class="tui-form__row tui-form__row_half-width">
-  <div>kekw</div>
+  <ng-container>
+    <h6 class="tui-text_h6 form__section-title">A customer info</h6>
+    <div class="tui-form__row">
+      <tui-input formControlName="customerCompanyName">
+        A company name
+      </tui-input>
+    </div>
+    <div class="tui-form__row">
+      <tui-input formControlName="customerHeaderFullname">
+        A header fullname
+      </tui-input>
+    </div>
+    <div class="tui-form__row">
+      <tui-input formControlName="customerHeaderPosition">
+        A header position
+      </tui-input>
+    </div>
+  </ng-container>
+  <ng-container>
+    <h6 class="tui-text_h6 form__section-title">An executor info</h6>
+    <div class="tui-form__row">
+      <tui-input formControlName="executorCompanyName">
+        A company name
+      </tui-input>
+    </div>
+    <div class="tui-form__row">
+      <tui-input formControlName="executorHeaderFullname">
+        A header fullname
+      </tui-input>
+    </div>
+    <div class="tui-form__row">
+      <tui-input formControlName="executorHeaderPosition">
+        A header position
+      </tui-input>
+    </div>
+    <div class="tui-form__row">
+      <tui-input formControlName="executorHeaderPosition">
+        A rate per hour
+      </tui-input>
+    </div>
+  </ng-container>
+  <div>
+    <h6 class="tui-text_h6 form__section-title">A contract</h6>
+    <div class="tui-form__row">
+      <tui-input formControlName="contractNumber">
+        A contract number
+      </tui-input>
+    </div>
+    <div class="tui-form__row">
+      <tui-input formControlName="contractApprovalDate">
+        An approval date
+      </tui-input>
+    </div>
+    <div class="tui-form__row">
+      <tui-input formControlName="contractFile"> A contract file </tui-input>
+    </div>
+  </div>
+  <div>
+    <h6 class="tui-text_h6 form__section-title">An act</h6>
+    <div class="tui-form__row">
+      <tui-input formControlName="actTemplateFile"> A template file </tui-input>
+    </div>
+  </div>
+  <div>
+    <h6 class="tui-text_h6 form__section-title">An task</h6>
+    <div class="tui-form__row">
+      <tui-input formControlName="taskTemplateFile"> A template file </tui-input>
+    </div>
+  </div>
   <tui-error
     formControlName="reportPeriod"
     [error]="[] | tuiFieldError | async"
