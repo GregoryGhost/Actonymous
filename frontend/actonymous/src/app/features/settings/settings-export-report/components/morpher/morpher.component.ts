@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConnectionPingStatuses } from 'src/app/shared/components/connection-pinger/models';
 
 @Component({
   selector: 'morpher',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MorpherComponent implements OnInit {
 
+  public pingConnection = ConnectionPingStatuses.Idle;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  public pingMorpher(event: MouseEvent): void {
+    this.pingConnection = ConnectionPingStatuses.Pending;
+  }
 }

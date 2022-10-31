@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConnectionPingStatuses } from 'src/app/shared/components/connection-pinger/models';
 
 @Component({
   selector: 'jira-credentials',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class JiraCredentialsComponent implements OnInit {
 
-  public isPingingJiraServer: boolean = false;
+  public pingJiraConnectionStatus = ConnectionPingStatuses.Idle;
 
   constructor() { }
 
@@ -15,7 +16,7 @@ export class JiraCredentialsComponent implements OnInit {
   }
 
   public pingJiraServer(event: MouseEvent): void {
-    //TODO: raise event to ping jira server
+    this.pingJiraConnectionStatus = ConnectionPingStatuses.Pending;
   }
 
 }

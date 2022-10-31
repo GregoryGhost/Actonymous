@@ -1,0 +1,33 @@
+<div class="tui-container connection-pinger">
+  <div class="tui-row">
+    <button
+      tuiIconButton
+      type="button"
+      icon="tuiIconRefresh"
+      appearance="icon"
+      [showLoader]="isPendingStatus"
+      (click)="ping($event)"
+    ></button>
+
+    <ng-container [ngSwitch]="status">
+      <ng-template
+        *ngSwitchCase="statuses.HaveConnection"
+        [ngTemplateOutlet]="haveConnection"
+      ></ng-template>
+      <ng-template
+        *ngSwitchCase="statuses.HaveNoConnection"
+        [ngTemplateOutlet]="noConnection"
+      ></ng-template>
+      <ng-template *ngSwitchDefault></ng-template>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #haveConnection>
+  <tui-notification status="success"> There is a connection. </tui-notification>
+</ng-template>
+<ng-template #noConnection>
+  <tui-notification status="error" class="tui-col-5">
+    No connection.
+  </tui-notification>
+</ng-template>

@@ -1,9 +1,13 @@
 <h3 class="tui-form__header form__title">Morpher</h3>
-<div class="tui-form__row tui-form__row_half-width">
-  <div class="tui-form__row">
+<div class="tui-form__row tui-form__buttons">
+  <div class="tui-form__row tui-form__row_half-width">
     <tui-input formControlName="accessToken"> An access token </tui-input>
   </div>
-  <div>Ping Morpher access by token</div>
+  <connection-pinger
+    class="tui-form__row_half-width"
+    (onClick)="pingMorpher($event)"
+    [status]="pingConnection"
+  ></connection-pinger>
   <tui-error
     formControlName="reportPeriod"
     [error]="[] | tuiFieldError | async"
