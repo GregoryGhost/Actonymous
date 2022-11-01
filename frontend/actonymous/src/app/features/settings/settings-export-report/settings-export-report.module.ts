@@ -11,7 +11,7 @@ import {
 } from './components/';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiButtonModule, TuiErrorModule, TuiLabelModule } from '@taiga-ui/core';
-import { TuiFieldErrorPipeModule, TuiInputModule } from '@taiga-ui/kit';
+import { TuiFieldErrorPipeModule, TuiInputFilesModule, TuiInputModule } from '@taiga-ui/kit';
 import { SharedModule } from 'src/app/shared';
 
 const COMPONENTS = [
@@ -34,7 +34,8 @@ const CONTAINERS = [PageComponent];
     TuiFieldErrorPipeModule,
     TuiLabelModule,
     TuiInputModule,
-    SharedModule
+    SharedModule,
+    TuiInputFilesModule
   ],
 })
 export class SettingsExportReportModule {}
