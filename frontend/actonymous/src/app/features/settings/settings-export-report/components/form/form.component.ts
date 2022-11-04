@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
-  Validators,
 } from '@angular/forms';
 import { Form } from 'src/app/shared';
 import { SettingsExportReport } from '../../models';
@@ -27,7 +25,7 @@ export class FormComponent implements OnInit {
   constructor(private readonly fb: FormBuilder) {
     //TODO: add form controls
     this.pageForm = this.fb.group({
-      jiraCredentials: new FormControl(
+      jiraCredentials: this.fb.control(
         { login: '', password: '', serverAddress: '' },
         { nonNullable: true }
       ),

@@ -4,12 +4,10 @@ import {
   forwardRef,
   Input,
   OnInit,
-  SimpleChanges,
 } from '@angular/core';
 import {
   ControlValueAccessor,
   FormBuilder,
-  FormControl,
   FormGroup,
   NG_VALUE_ACCESSOR,
   Validators,
@@ -45,15 +43,15 @@ export class JiraCredentialsComponent implements OnInit, ControlValueAccessor {
       serverAddress: ''
     };
     this.form = this.fb.group({
-      login: new FormControl('', {
+      login: this.fb.control('', {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      password: new FormControl('', {
+      password: this.fb.control('', {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      serverAddress: new FormControl('', {
+      serverAddress: this.fb.control('', {
         nonNullable: true,
         validators: [Validators.required],
       }),
