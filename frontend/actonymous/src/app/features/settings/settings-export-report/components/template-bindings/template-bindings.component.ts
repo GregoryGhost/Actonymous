@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TuiFileLike, TuiFileState } from '@taiga-ui/kit';
 
@@ -11,7 +11,8 @@ type TemplateBindingFormGroup = FormGroup<TemplateBindingForm>;
 @Component({
   selector: 'template-bindings',
   templateUrl: './template-bindings.component.html',
-  styleUrls: ['./template-bindings.component.scss']
+  styleUrls: ['./template-bindings.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TemplateBindingsComponent implements OnInit {
 
@@ -32,6 +33,7 @@ export class TemplateBindingsComponent implements OnInit {
   constructor(private readonly fb: FormBuilder) {
     this.actTemplateFileState = 'normal';
     this.actTemplateFile = undefined;
+
     this.taskTemplateFileState = 'normal';
     this.taskTemplateFile = undefined;
     this.form = this.fb.group({

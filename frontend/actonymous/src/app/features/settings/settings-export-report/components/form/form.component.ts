@@ -1,6 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Form } from 'src/app/shared';
 import { SettingsExportReport } from '../../models';
+
+type SettingsExportReportForm = FormGroup<Form<SettingsExportReport>>;
 
 @Component({
   selector: 'settings-export-report-form',
@@ -14,12 +22,15 @@ export class FormComponent implements OnInit {
   @Output()
   public onSubmit: EventEmitter<SettingsExportReport>;
 
-  public readonly pageForm: FormGroup;
+  public readonly pageForm: SettingsExportReportForm;
 
   constructor(private readonly fb: FormBuilder) {
     //TODO: add form controls
     this.pageForm = this.fb.group({
-      reportPeriod: [null, [Validators.required]],
+      jiraCredentials: new FormControl(
+        { login: '', password: '', serverAddress: '' },
+        { nonNullable: true }
+      ),
     });
     this.onSubmit = new EventEmitter<SettingsExportReport>();
     this.data = null;
@@ -28,6 +39,7 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {}
 
   public submit(): void {
-    //TODO: implement
+    const data = JSON.stringify(this.pageForm.getRawValue());
+    console.log(data);
   }
 }

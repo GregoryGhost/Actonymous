@@ -1,3 +1,5 @@
-export class SettingsExportReport {
-    public constructor(public readonly test: string) {}
+import { JiraCredentials } from "./jira-credentials";
+
+export interface SettingsExportReport {
+    jiraCredentials: JiraCredentials;
 }
