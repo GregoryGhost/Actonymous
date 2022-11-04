@@ -19,6 +19,7 @@
     "@angular/platform-browser": "^14.0.0",
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
+    "@ngneat/until-destroy": "^9.2.2",
     "@taiga-ui/addon-commerce": "^3.6.0",
     "@taiga-ui/addon-preview": "^3.6.0",
     "@taiga-ui/addon-table": "^3.6.0",

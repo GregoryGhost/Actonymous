@@ -12,11 +12,13 @@ import {
   NG_VALUE_ACCESSOR,
   Validators,
 } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ConnectionPingStatuses, Form } from 'src/app/shared/';
 import { JiraCredentials } from '../../models';
 
 type JiraCredentialsForm = FormGroup<Form<JiraCredentials>>;
 
+@UntilDestroy()
 @Component({
   selector: 'jira-credentials',
   templateUrl: './jira-credentials.component.html',
@@ -65,7 +67,7 @@ export class JiraCredentialsComponent implements OnInit, ControlValueAccessor {
   }
 
   registerOnChange(fn: (value: Partial<JiraCredentials>) => void): void {
-    this.form.valueChanges.subscribe(fn);
+    this.form.valueChanges.pipe(untilDestroyed(this)).subscribe(fn);
   }
 
   registerOnTouched(fn: any): void {}
