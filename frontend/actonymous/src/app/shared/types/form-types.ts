@@ -1,7 +1,43 @@
-import { FormControl, FormGroup } from "@angular/forms";
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+} from '@angular/forms';
+import { untilDestroyed } from '@ngneat/until-destroy';
 
-export type Form<T> = {
+export { BaseFormGroup, FormData };
+
+type Form<T> = {
   [P in keyof T]: T[P] extends 'object'
     ? FormGroup<Form<T[P]>>
     : FormControl<T[P]>;
 };
+
+type FormData<TData> = FormGroup<Form<TData>>;
+
+class BaseFormGroup<TData> implements ControlValueAccessor {
+  public constructor(protected readonly form: FormData<TData>) {}
+
+  writeValue(value: TData): void {
+    this.form.setValue(value as any);
+  }
+
+  registerOnChange(fn: (value: Partial<TData>) => void): void {
+    this.form.valueChanges.pipe(untilDestroyed(this)).subscribe(fn as any);
+  }
+
+  registerOnTouched(fn: unknown): void {}
+
+  setDisabledState?(isDisabled: boolean): void {
+    if (isDisabled) {
+      this.form.disable();
+    } else {
+      this.form.enable();
+    }
+  }
+
+  validate(): ValidationErrors | null {
+    return this.form.invalid ? { invalid: true } : null;
+  }
+}

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Form } from 'src/app/shared';
+import { FormBuilder, Validators } from '@angular/forms';
+import { FormData } from 'src/app/shared';
 import { SettingsExportReport } from '../../models';
 
-type SettingsExportReportForm = FormGroup<Form<SettingsExportReport>>;
+type SettingsExportReportForm = FormData<SettingsExportReport>;
 
 @Component({
   selector: 'settings-export-report-form',
@@ -24,6 +24,10 @@ export class FormComponent implements OnInit {
     this.pageForm = this.fb.group({
       jiraCredentials: this.fb.control(
         { login: '', password: '', serverAddress: '' },
+        { nonNullable: true, validators: [Validators.required] }
+      ),
+      morpher: this.fb.control(
+        { accessToken: '' },
         { nonNullable: true, validators: [Validators.required] }
       ),
     });

@@ -13,6 +13,7 @@ export class PageComponent implements OnInit {
   constructor() {
     this.data$ = of({
       jiraCredentials: { login: '', password: '', serverAddress: '' },
+      morpher: { accessToken: '' }
     });
   }
 
