@@ -58,43 +58,39 @@
     </div>
   </div>
   <div>
-    <h6 class="tui-text_h6 form__section-title">An act</h6>
+    <h6 class="tui-text_h6 form__section-title">An act template</h6>
     <div class="tui-form__row">
-      <label tuiLabel="A template file">
-        <tui-input-files
-          *ngIf="!form.value.actTemplateFile?.value"
-          formControlName="actTemplateFile"
-          (reject)="onRejectActTemplateFile($event)"
-        ></tui-input-files>
-        <tui-files class="tui-space_top-1">
-          <tui-file
-            *ng-if="actTemplateFile"
-            [state]="actTemplateFileState"
-            [file]="actTemplateFile!"
-            (removed)="removeActTemplateFile()"
-          ></tui-file>
-        </tui-files>
-      </label>
+      <tui-input-files
+        *ngIf="!form.value.actTemplateFile?.value"
+        formControlName="actTemplateFile"
+        (reject)="onRejectActTemplateFile($event)"
+      ></tui-input-files>
+      <tui-files class="tui-space_top-1">
+        <tui-file
+          *ng-if="actTemplateFile"
+          [state]="actTemplateFileState"
+          [file]="actTemplateFile!"
+          (removed)="removeActTemplateFile()"
+        ></tui-file>
+      </tui-files>
     </div>
   </div>
   <div>
-    <h6 class="tui-text_h6 form__section-title">An task</h6>
+    <h6 class="tui-text_h6 form__section-title">An task template</h6>
     <div class="tui-form__row">
-      <label tuiLabel="A template file">
-        <tui-input-files
-          *ngIf="!form.value.taskTemplateFile?.value"
-          formControlName="taskTemplateFile"
-          (reject)="onRejectTaskTemplateFile($event)"
-        ></tui-input-files>
-        <tui-files class="tui-space_top-1">
-          <tui-file
-            *ng-if="taskTemplateFile"
-            [state]="taskTemplateFileState"
-            [file]="taskTemplateFile!"
-            (removed)="removeTaskTemplateFile()"
-          ></tui-file>
-        </tui-files>
-      </label>
+      <tui-input-files
+        *ngIf="!form.value.taskTemplateFile?.value"
+        formControlName="taskTemplateFile"
+        (reject)="onRejectTaskTemplateFile($event)"
+      ></tui-input-files>
+      <tui-files class="tui-space_top-1">
+        <tui-file
+          *ng-if="taskTemplateFile"
+          [state]="taskTemplateFileState"
+          [file]="taskTemplateFile!"
+          (removed)="removeTaskTemplateFile()"
+        ></tui-file>
+      </tui-files>
     </div>
   </div>
   <tui-error
