@@ -9,11 +9,14 @@ import {
   ControlValueAccessor,
   FormBuilder,
   FormGroup,
+  NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ConnectionPingStatuses, Form } from 'src/app/shared/';
+import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
+import { ConnectionPingStatuses, Form, maxLengthValidator, minLengthValidator, requiredInputMsg } from 'src/app/shared/';
 import { JiraCredentials } from '../../models';
 
 type JiraCredentialsForm = FormGroup<Form<JiraCredentials>>;
@@ -24,11 +27,26 @@ type JiraCredentialsForm = FormGroup<Form<JiraCredentials>>;
   templateUrl: './jira-credentials.component.html',
   styleUrls: ['./jira-credentials.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{ 
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => JiraCredentialsComponent),
-    multi: true
-   }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => JiraCredentialsComponent),
+      multi: true,
+    },
+    {
+      provide: TUI_VALIDATION_ERRORS,
+      useValue: {
+        required: requiredInputMsg,
+        maxlength: maxLengthValidator,
+        minlength: minLengthValidator,
+      },
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => JiraCredentialsComponent),
+      multi: true,
+    },
+  ],
 })
 export class JiraCredentialsComponent implements OnInit, ControlValueAccessor {
   @Input()
@@ -42,20 +60,20 @@ export class JiraCredentialsComponent implements OnInit, ControlValueAccessor {
     this.jiraCreds = {
       login: '',
       password: '',
-      serverAddress: ''
+      serverAddress: '',
     };
     this.form = this.fb.group({
       login: this.fb.control('', {
         nonNullable: true,
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.maxLength(20)],
       }),
       password: this.fb.control('', {
         nonNullable: true,
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.maxLength(50)],
       }),
       serverAddress: this.fb.control('', {
         nonNullable: true,
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.maxLength(250)],
       }),
     });
   }
@@ -78,6 +96,12 @@ export class JiraCredentialsComponent implements OnInit, ControlValueAccessor {
     } else {
       this.form.enable();
     }
+  }
+
+  validate(): ValidationErrors | null {
+    return this.form.invalid
+      ? { invalid: true }
+      : null;
   }
 
   public pingJiraServer(event: MouseEvent): void {

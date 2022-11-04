@@ -1,8 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Form } from 'src/app/shared';
 import { SettingsExportReport } from '../../models';
 
@@ -27,7 +24,7 @@ export class FormComponent implements OnInit {
     this.pageForm = this.fb.group({
       jiraCredentials: this.fb.control(
         { login: '', password: '', serverAddress: '' },
-        { nonNullable: true }
+        { nonNullable: true, validators: [Validators.required] }
       ),
     });
     this.onSubmit = new EventEmitter<SettingsExportReport>();
@@ -37,6 +34,10 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {}
 
   public submit(): void {
+    if (this.pageForm.invalid) {
+      return;
+    }
+
     const data = JSON.stringify(this.pageForm.getRawValue());
     console.log(data);
   }
