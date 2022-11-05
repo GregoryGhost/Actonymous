@@ -56,18 +56,10 @@ export class JiraCredentialsComponent
   extends BaseFormGroup<JiraCredentials>
   implements OnInit
 {
-  @Input()
-  public jiraCreds: JiraCredentials;
-
   public pingJiraConnectionStatus = ConnectionPingStatuses.Idle;
 
   constructor(private readonly fb: FormBuilder) {
     super(JiraCredentialsComponent.initForm(fb));
-    this.jiraCreds = {
-      login: '',
-      password: '',
-      serverAddress: '',
-    };
   }
 
   ngOnInit(): void {}

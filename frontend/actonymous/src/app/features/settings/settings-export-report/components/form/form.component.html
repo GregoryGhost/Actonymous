@@ -7,7 +7,7 @@
 <form class="b-form" [formGroup]="pageForm" (submit)="submit()" #form>
   <div class="tui-container tui-container_adaptive">
     <div class="tui-col-6">
-      <!-- <template-bindings></template-bindings> -->
+      <template-bindings formControlName="templateBindings"></template-bindings>
       <jira-credentials formControlName="jiraCredentials"></jira-credentials>
       <morpher formControlName="morpher"></morpher>
       <div class="tui-form__buttons">
