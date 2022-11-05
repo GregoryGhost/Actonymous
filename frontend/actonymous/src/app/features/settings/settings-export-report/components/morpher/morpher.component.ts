@@ -2,13 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   forwardRef,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import {
   FormBuilder,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
@@ -18,7 +18,7 @@ import {
   maxLengthValidator,
   minLengthValidator,
   requiredInputMsg,
-  ConnectionPingStatuses
+  ConnectionPingStatuses,
 } from 'src/app/shared';
 import { MorpherInfo } from '../../models';
 
@@ -42,6 +42,7 @@ type MorpherForm = FormData<MorpherInfo>;
         required: requiredInputMsg,
         maxlength: maxLengthValidator,
         minlength: minLengthValidator,
+        pattern: 'Invalid the access token',
       },
     },
     {
@@ -57,6 +58,11 @@ export class MorpherComponent
 {
   public pingConnection = ConnectionPingStatuses.Idle;
 
+  public readonly accessTokenMask = {
+    guid: true,
+    mask: MorpherComponent.getAccessTokenMask(),
+  };
+
   constructor(private readonly fb: FormBuilder) {
     super(MorpherComponent.initForm(fb));
   }
@@ -68,6 +74,10 @@ export class MorpherComponent
   }
 
   private static initForm(fb: FormBuilder): MorpherForm {
+    const accessTokenMaskPattern = Validators.pattern(
+      /[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/
+    );
+
     return fb.group({
       accessToken: fb.control('', {
         nonNullable: true,
@@ -75,8 +85,28 @@ export class MorpherComponent
           Validators.required,
           Validators.maxLength(36),
           Validators.minLength(36),
+          accessTokenMaskPattern,
         ],
       }),
     });
+  }
+
+  private static getAccessTokenMask(): (string | RegExp)[] {
+    const maskSymbols8: RegExp[] = Array(8).fill(/[a-z0-9]/);
+    const maskSymbols4: RegExp[] = Array(4).fill(/[a-z0-9]/);
+    const maskSymbols12: RegExp[] = Array(12).fill(/[a-z0-9]/);
+    const mask = [
+      ...maskSymbols8,
+      `-`,
+      ...maskSymbols4,
+      `-`,
+      ...maskSymbols4,
+      `-`,
+      ...maskSymbols4,
+      `-`,
+      ...maskSymbols12,
+    ];
+
+    return mask;
   }
 }

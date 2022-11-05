@@ -16,6 +16,7 @@ import {
   TuiLabelModule,
 } from '@taiga-ui/core';
 import {
+  TextMaskModule,
   TuiFieldErrorPipeModule,
   TuiInputFilesModule,
   TuiInputModule,
@@ -46,6 +47,7 @@ const CONTAINERS = [PageComponent];
     TuiInputModule,
     TuiInputFilesModule,
     TuiInputPasswordModule,
+    TextMaskModule
   ],
 })
 export class SettingsExportReportModule {}

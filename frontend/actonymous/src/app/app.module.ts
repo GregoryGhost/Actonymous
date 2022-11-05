@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TextMaskModule } from "@taiga-ui/kit";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { AppComponent } from './app.component';
       TuiRootModule,
       TuiDialogModule,
       TuiAlertModule,
-      TuiLinkModule
+      TuiLinkModule,
 ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]

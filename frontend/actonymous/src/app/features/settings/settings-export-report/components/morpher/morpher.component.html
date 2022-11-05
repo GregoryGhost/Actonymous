@@ -2,7 +2,9 @@
 <div class="tui-form__row" [formGroup]="form">
   <div class="tui-form__buttons">
     <div class="tui-form__row_half-width">
-      <tui-input formControlName="accessToken"> An access token </tui-input>
+      <tui-input formControlName="accessToken" [textMask]="accessTokenMask">
+        An access token
+      </tui-input>
     </div>
     <connection-pinger
       class="tui-form__row_half-width"
