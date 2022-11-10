@@ -1,0 +1,17 @@
+<h6 class="tui-text_h6 form__section-title">A contract</h6>
+<ng-container [formGroup]="form">
+  <div class="tui-form__row">
+    <tui-input formControlName="contractNumber"> A contract number </tui-input>
+  </div>
+  <div class="tui-form__row">
+    <tui-input-date toNativeDate formControlName="approvalDate">
+      An approval date
+    </tui-input-date>
+  </div>
+  <div class="tui-form__row">
+    <h6 class="tui-text_h6 form__section-title">A contract file</h6>
+    <div class="tui-form__row">
+      <simple-input-file formControlName="contractFile"></simple-input-file>
+    </div>
+  </div>
+</ng-container>

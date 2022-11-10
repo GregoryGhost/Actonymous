@@ -1,63 +1,117 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { TuiFileLike, TuiFileState } from '@taiga-ui/kit';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  Input,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  Validators,
+} from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import {
+  TuiFileLike,
+  TuiFileState,
+  TUI_VALIDATION_ERRORS,
+} from '@taiga-ui/kit';
+import {
+  BaseMainFormGroup,
+  MainForm,
+  maxLengthValidator,
+  minLengthValidator,
+  requiredInputMsg,
+} from 'src/app/shared';
+import { ContractInfo, TemplateBindingsInfo } from '../../models';
 
-type TemplateBindingForm = {
-  actTemplateFile: FormControl,
-  taskTemplateFile: FormControl
-};
-type TemplateBindingFormGroup = FormGroup<TemplateBindingForm>;
+type TemplateBindingsForm = MainForm<TemplateBindingsInfo>;
 
+@UntilDestroy()
 @Component({
   selector: 'template-bindings',
   templateUrl: './template-bindings.component.html',
   styleUrls: ['./template-bindings.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TemplateBindingsComponent),
+      multi: true,
+    },
+    {
+      provide: TUI_VALIDATION_ERRORS,
+      useValue: {
+        required: requiredInputMsg,
+        maxlength: maxLengthValidator,
+        minlength: minLengthValidator,
+      },
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => TemplateBindingsComponent),
+      multi: true,
+    },
+  ],
 })
-export class TemplateBindingsComponent implements OnInit {
-
-  @Input()
-  public actTemplateFileState: TuiFileState;
-
-  @Input()
-  public actTemplateFile: TuiFileLike | undefined;
-
-  @Input()
-  public taskTemplateFileState: TuiFileState;
-
-  @Input()
-  public taskTemplateFile: TuiFileLike | undefined;
-
-  public form: TemplateBindingFormGroup;
-
+export class TemplateBindingsComponent
+  extends BaseMainFormGroup<TemplateBindingsInfo>
+  implements OnInit
+{
   constructor(private readonly fb: FormBuilder) {
-    this.actTemplateFileState = 'normal';
-    this.actTemplateFile = undefined;
+    super(TemplateBindingsComponent.initForm(fb));
+  }
 
-    this.taskTemplateFileState = 'normal';
-    this.taskTemplateFile = undefined;
-    this.form = this.fb.group({
-      actTemplateFile: [undefined, [Validators.required]],
-      taskTemplateFile: [undefined, [Validators.required]],
+  ngOnInit(): void {}
+
+  private static initForm(fb: FormBuilder): TemplateBindingsForm {
+    const customerInfo = fb.nonNullable.control(
+      {
+        companyName: '',
+        headerFullname: '',
+        headerPosition: '',
+      },
+      {
+        validators: [Validators.required],
+      }
+    );
+    const executorInfo = fb.nonNullable.control(
+      {
+        companyName: '',
+        headerFullname: '',
+        headerPosition: '',
+        ratePerHour: 0,
+      },
+      {
+        validators: [Validators.required],
+      }
+    );
+    const contractInfo: FormControl<ContractInfo> = fb.nonNullable.control(
+      {
+        contractNumber: '',
+        approvalDate: new Date(),
+        contractFile: null,
+      },
+      {
+        validators: [Validators.required],
+      }
+    );
+    const actTemplateFile = fb.nonNullable.control<TuiFileLike | null>(null, {
+      validators: [Validators.required],
     });
-  }
+    const taskTemplateFile = fb.nonNullable.control<TuiFileLike | null>(null, {
+      validators: [Validators.required],
+    });
 
-  ngOnInit(): void {
-  }
-
-  public removeActTemplateFile(): void {
-    //TODO:
-  }
-
-  public removeTaskTemplateFile(): void {
-    //TODO:
-  }
-
-  public onRejectActTemplateFile(event: TuiFileLike | readonly TuiFileLike[]): void {
-    //TODO:
-  }
-
-  public onRejectTaskTemplateFile(event: TuiFileLike | readonly TuiFileLike[]): void {
-    //TODO:
+    return fb.group({
+      customerInfo,
+      executorInfo,
+      contractInfo,
+      actTemplateFile,
+      taskTemplateFile,
+    });
   }
 }

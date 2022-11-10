@@ -1,34 +1,39 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { SettingsExportReportRoutingModule } from './settings-export-report-routing.module';
-import { PageComponent } from './containers/';
-import {
-  FormComponent,
-  JiraCredentialsComponent,
-  MorpherComponent,
-  TemplateBindingsComponent,
-} from './components/';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   TuiButtonModule,
   TuiErrorModule,
-  TuiLabelModule,
+  TuiLabelModule
 } from '@taiga-ui/core';
 import {
   TextMaskModule,
   TuiFieldErrorPipeModule,
-  TuiInputFilesModule,
-  TuiInputModule,
-  TuiInputPasswordModule,
+  TuiInputDateModule, TuiInputModule,
+  TuiInputPasswordModule
 } from '@taiga-ui/kit';
-import { SharedModule } from 'src/app/shared';
+import { SharedModule, SimpleInputFileModule } from 'src/app/shared';
+import {
+  ContractInfoComponent,
+  CustomerInfoComponent,
+  ExecutorInfoComponent,
+  FormComponent,
+  JiraCredentialsComponent,
+  MorpherComponent,
+  TemplateBindingsComponent
+} from './components/';
+import { PageComponent } from './containers/';
+import { SettingsExportReportRoutingModule } from './settings-export-report-routing.module';
 
 const COMPONENTS = [
   FormComponent,
   TemplateBindingsComponent,
   JiraCredentialsComponent,
   MorpherComponent,
+  CustomerInfoComponent,
+  ExecutorInfoComponent,
+  ContractInfoComponent,
 ];
 const CONTAINERS = [PageComponent];
 
@@ -45,9 +50,10 @@ const CONTAINERS = [PageComponent];
     TuiFieldErrorPipeModule,
     TuiLabelModule,
     TuiInputModule,
-    TuiInputFilesModule,
+    SimpleInputFileModule,
     TuiInputPasswordModule,
-    TextMaskModule
+    TextMaskModule,
+    TuiInputDateModule,
   ],
 })
 export class SettingsExportReportModule {}

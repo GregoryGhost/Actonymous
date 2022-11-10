@@ -6,18 +6,30 @@ import {
 } from '@angular/forms';
 import { untilDestroyed } from '@ngneat/until-destroy';
 
-export { BaseFormGroup, FormData };
+export { BaseFormGroup, FormData, MainForm, BaseMainFormGroup };
 
 type Form<T> = {
-  [P in keyof T]: T[P] extends 'object'
+  [P in keyof T]: T[P] extends Date
+    ? FormControl<T[P]>
+    : T[P] extends object
     ? FormGroup<Form<T[P]>>
     : FormControl<T[P]>;
 };
 
+type RootForm<T> = {
+  [P in keyof T]: FormControl<T[P]>;
+};
+
 type FormData<TData> = FormGroup<Form<TData>>;
 
-class BaseFormGroup<TData> implements ControlValueAccessor {
-  public constructor(protected readonly form: FormData<TData>) {}
+type MainForm<TData> = FormGroup<RootForm<TData>>;
+
+class BaseForm<TData, TFormType> implements ControlValueAccessor {
+  public constructor(
+    protected readonly form: FormGroup<
+      TFormType extends string ? Form<TData> : RootForm<TData>
+    >
+  ) {}
 
   writeValue(value: TData): void {
     this.form.setValue(value as any);
@@ -41,3 +53,11 @@ class BaseFormGroup<TData> implements ControlValueAccessor {
     return this.form.invalid ? { invalid: true } : null;
   }
 }
+
+type FormType = '';
+
+type RootFormType = 0;
+
+class BaseMainFormGroup<TData> extends BaseForm<TData, RootFormType> {}
+
+class BaseFormGroup<TData> extends BaseForm<TData, FormType> {}

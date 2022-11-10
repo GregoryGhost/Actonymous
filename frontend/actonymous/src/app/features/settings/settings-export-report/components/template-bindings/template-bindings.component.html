@@ -1,100 +1,18 @@
 <h3 class="tui-form__header form__title">Template bindings</h3>
-<div class="tui-form__row tui-form__row_half-width">
+<div class="tui-form__row tui-form__row_half-width" [formGroup]="form">
+  <customer-info formControlName="customerInfo"></customer-info>
+  <executor-info formControlName="executorInfo"></executor-info>
+  <contract-info formControlName="contractInfo"></contract-info>
   <ng-container>
-    <h6 class="tui-text_h6 form__section-title">A customer info</h6>
+    <h6 class="tui-text_h6 form__section-title">An act template file</h6>
     <div class="tui-form__row">
-      <tui-input formControlName="customerCompanyName">
-        A company name
-      </tui-input>
-    </div>
-    <div class="tui-form__row">
-      <tui-input formControlName="customerHeaderFullname">
-        A header fullname
-      </tui-input>
-    </div>
-    <div class="tui-form__row">
-      <tui-input formControlName="customerHeaderPosition">
-        A header position
-      </tui-input>
+      <simple-input-file formControlName="actTemplateFile"></simple-input-file>
     </div>
   </ng-container>
   <ng-container>
-    <h6 class="tui-text_h6 form__section-title">An executor info</h6>
+    <h6 class="tui-text_h6 form__section-title">A task template file</h6>
     <div class="tui-form__row">
-      <tui-input formControlName="executorCompanyName">
-        A company name
-      </tui-input>
-    </div>
-    <div class="tui-form__row">
-      <tui-input formControlName="executorHeaderFullname">
-        A header fullname
-      </tui-input>
-    </div>
-    <div class="tui-form__row">
-      <tui-input formControlName="executorHeaderPosition">
-        A header position
-      </tui-input>
-    </div>
-    <div class="tui-form__row">
-      <tui-input formControlName="executorHeaderPosition">
-        A rate per hour
-      </tui-input>
+      <simple-input-file formControlName="taskTemplateFile"></simple-input-file>
     </div>
   </ng-container>
-  <div>
-    <h6 class="tui-text_h6 form__section-title">A contract</h6>
-    <div class="tui-form__row">
-      <tui-input formControlName="contractNumber">
-        A contract number
-      </tui-input>
-    </div>
-    <div class="tui-form__row">
-      <tui-input formControlName="contractApprovalDate">
-        An approval date
-      </tui-input>
-    </div>
-    <div class="tui-form__row">
-      <tui-input formControlName="contractFile"> A contract file </tui-input>
-    </div>
-  </div>
-  <div>
-    <h6 class="tui-text_h6 form__section-title">An act template</h6>
-    <div class="tui-form__row">
-      <tui-input-files
-        *ngIf="!form.value.actTemplateFile?.value"
-        formControlName="actTemplateFile"
-        (reject)="onRejectActTemplateFile($event)"
-      ></tui-input-files>
-      <tui-files class="tui-space_top-1">
-        <tui-file
-          *ng-if="actTemplateFile"
-          [state]="actTemplateFileState"
-          [file]="actTemplateFile!"
-          (removed)="removeActTemplateFile()"
-        ></tui-file>
-      </tui-files>
-    </div>
-  </div>
-  <div>
-    <h6 class="tui-text_h6 form__section-title">An task template</h6>
-    <div class="tui-form__row">
-      <tui-input-files
-        *ngIf="!form.value.taskTemplateFile?.value"
-        formControlName="taskTemplateFile"
-        (reject)="onRejectTaskTemplateFile($event)"
-      ></tui-input-files>
-      <tui-files class="tui-space_top-1">
-        <tui-file
-          *ng-if="taskTemplateFile"
-          [state]="taskTemplateFileState"
-          [file]="taskTemplateFile!"
-          (removed)="removeTaskTemplateFile()"
-        ></tui-file>
-      </tui-files>
-    </div>
-  </div>
-  <tui-error
-    formControlName="reportPeriod"
-    [error]="[] | tuiFieldError | async"
-  ></tui-error>
 </div>

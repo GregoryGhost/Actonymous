@@ -1,0 +1,11 @@
+<tui-input-files
+  *ngIf="!fileControl.value"
+  [formControl]="fileControl"
+></tui-input-files>
+<tui-files class="tui-space_top-1">
+  <tui-file
+    *ngIf="fileControl.valueChanges | async as file"
+    [file]="file"
+    (removed)="removeFile()"
+  ></tui-file>
+</tui-files>

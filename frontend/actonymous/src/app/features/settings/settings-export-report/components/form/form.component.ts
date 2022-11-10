@@ -1,9 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { FormData } from 'src/app/shared';
-import { SettingsExportReport } from '../../models';
+import { TuiFileLike } from '@taiga-ui/kit';
+import { MainForm } from 'src/app/shared';
+import {
+  JiraCredentials,
+  MorpherInfo,
+  SettingsExportReport,
+  TemplateBindingsInfo,
+} from '../../models';
 
-type SettingsExportReportForm = FormData<SettingsExportReport>;
+type SettingsExportReportForm = MainForm<SettingsExportReport>;
 
 @Component({
   selector: 'settings-export-report-form',
@@ -20,17 +26,7 @@ export class FormComponent implements OnInit {
   public readonly pageForm: SettingsExportReportForm;
 
   constructor(private readonly fb: FormBuilder) {
-    //TODO: add form controls
-    this.pageForm = this.fb.group({
-      jiraCredentials: this.fb.control(
-        { login: '', password: '', serverAddress: '' },
-        { nonNullable: true, validators: [Validators.required] }
-      ),
-      morpher: this.fb.control(
-        { accessToken: '' },
-        { nonNullable: true, validators: [Validators.required] }
-      ),
-    });
+    this.pageForm = FormComponent.initForm(fb);
     this.onSubmit = new EventEmitter<SettingsExportReport>();
     this.data = null;
   }
@@ -42,7 +38,48 @@ export class FormComponent implements OnInit {
       return;
     }
 
-    const data = JSON.stringify(this.pageForm.getRawValue());
-    console.log(data);
+    this.onSubmit.emit(this.pageForm.getRawValue());
+  }
+
+  private static initForm(fb: FormBuilder): SettingsExportReportForm {
+    const emptyFile = null as TuiFileLike | null;
+    const templateBindingsInfo: TemplateBindingsInfo = {
+      customerInfo: {
+        companyName: '',
+        headerFullname: '',
+        headerPosition: '',
+      },
+      executorInfo: {
+        companyName: '',
+        headerFullname: '',
+        headerPosition: '',
+        ratePerHour: 0,
+      },
+      contractInfo: {
+        contractNumber: '',
+        approvalDate: new Date(),
+        contractFile: emptyFile,
+      },
+      actTemplateFile: emptyFile,
+      taskTemplateFile: emptyFile,
+    };
+    const jiraCredentials: JiraCredentials = {
+      login: '',
+      password: '',
+      serverAddress: '',
+    };
+    const morpher: MorpherInfo = { accessToken: '' };
+
+    return fb.nonNullable.group({
+      jiraCredentials: fb.nonNullable.control(jiraCredentials, {
+        validators: [Validators.required],
+      }),
+      morpher: fb.nonNullable.control(morpher, {
+        validators: [Validators.required],
+      }),
+      templateBindings: fb.nonNullable.control(templateBindingsInfo, {
+        validators: [Validators.required],
+      }),
+    });
   }
 }
