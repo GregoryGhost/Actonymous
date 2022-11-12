@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TuiFileLike } from '@taiga-ui/kit';
 import { MainForm } from 'src/app/shared';
@@ -15,6 +15,7 @@ type SettingsExportReportForm = MainForm<SettingsExportReport>;
   selector: 'settings-export-report-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormComponent implements OnInit {
   @Input()

@@ -10,6 +10,11 @@
     <tui-input formControlName="headerPosition"> A header position </tui-input>
   </div>
   <div class="tui-form__row">
-    <tui-input formControlName="ratePerHour"> A rate per hour </tui-input>
+    <tui-input-number
+      [postfix]="'RUB' | tuiCurrency"
+      formControlName="ratePerHour"
+    >
+      A rate per hour
+    </tui-input-number>
   </div>
 </ng-container>

@@ -2,16 +2,19 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TuiCurrencyPipeModule } from '@taiga-ui/addon-commerce';
 import {
   TuiButtonModule,
   TuiErrorModule,
-  TuiLabelModule
+  TuiLabelModule,
 } from '@taiga-ui/core';
 import {
   TextMaskModule,
   TuiFieldErrorPipeModule,
-  TuiInputDateModule, TuiInputModule,
-  TuiInputPasswordModule
+  TuiInputDateModule,
+  TuiInputModule,
+  TuiInputNumberModule,
+  TuiInputPasswordModule,
 } from '@taiga-ui/kit';
 import { SharedModule, SimpleInputFileModule } from 'src/app/shared';
 import {
@@ -21,7 +24,7 @@ import {
   FormComponent,
   JiraCredentialsComponent,
   MorpherComponent,
-  TemplateBindingsComponent
+  TemplateBindingsComponent,
 } from './components/';
 import { PageComponent } from './containers/';
 import { SettingsExportReportRoutingModule } from './settings-export-report-routing.module';
@@ -54,6 +57,8 @@ const CONTAINERS = [PageComponent];
     TuiInputPasswordModule,
     TextMaskModule,
     TuiInputDateModule,
+    TuiInputNumberModule,
+    TuiCurrencyPipeModule,
   ],
 })
 export class SettingsExportReportModule {}
