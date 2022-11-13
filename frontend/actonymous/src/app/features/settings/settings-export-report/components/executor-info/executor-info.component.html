@@ -1,13 +1,31 @@
 <h6 class="tui-text_h6 form__section-title">An executor info</h6>
 <ng-container [formGroup]="form">
   <div class="tui-form__row">
-    <tui-input formControlName="companyName"> A company name </tui-input>
+    <tui-input formControlName="companyName">
+      A company name <span class="tui-required"></span>
+    </tui-input>
+    <tui-error
+      formControlName="companyName"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
   </div>
   <div class="tui-form__row">
-    <tui-input formControlName="headerFullname"> A header fullname </tui-input>
+    <tui-input formControlName="headerFullname">
+      A header fullname <span class="tui-required"></span
+    ></tui-input>
+    <tui-error
+      formControlName="headerFullname"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
   </div>
   <div class="tui-form__row">
-    <tui-input formControlName="headerPosition"> A header position </tui-input>
+    <tui-input formControlName="headerPosition">
+      A header position <span class="tui-required"></span>
+    </tui-input>
+    <tui-error
+      formControlName="headerPosition"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
   </div>
   <div class="tui-form__row">
     <tui-input-number
@@ -15,6 +33,11 @@
       formControlName="ratePerHour"
     >
       A rate per hour
+      <span class="tui-required"></span>
     </tui-input-number>
+    <tui-error
+      formControlName="ratePerHour"
+      [error]="[] | tuiFieldError | async"
+    ></tui-error>
   </div>
 </ng-container>

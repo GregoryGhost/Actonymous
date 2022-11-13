@@ -22,6 +22,7 @@ import { FormData } from 'src/app/shared';
 import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { TuiFileLike } from '@taiga-ui/kit';
+import { TuiValidationError } from '@taiga-ui/cdk';
 
 type ContractInfoForm = FormData<ContractInfo>;
 
@@ -56,6 +57,7 @@ export class ContractInfoComponent
   extends BaseFormGroup<ContractInfo>
   implements OnInit
 {
+  public readonly computedError = new TuiValidationError(`An error`);
   constructor(private readonly fb: FormBuilder) {
     super(ContractInfoComponent.initForm(fb));
   }
@@ -63,7 +65,7 @@ export class ContractInfoComponent
   ngOnInit(): void {}
 
   private static initForm(fb: FormBuilder): ContractInfoForm {
-    const contractFile = fb.nonNullable.control<TuiFileLike | null>(null, {
+    const contractFile = fb.control<TuiFileLike | null>(null, {
       validators: [Validators.required],
     });
 
@@ -74,7 +76,7 @@ export class ContractInfoComponent
       approvalDate: fb.nonNullable.control(new Date(), {
         validators: [Validators.required],
       }),
-      contractFile
+      contractFile,
     });
   }
 }

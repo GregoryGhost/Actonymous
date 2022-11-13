@@ -1,22 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TuiInputFilesModule } from '@taiga-ui/kit';
+import { TuiErrorModule } from '@taiga-ui/core';
+import { TuiFieldErrorPipeModule, TuiInputFilesModule } from '@taiga-ui/kit';
 import { SimpleInputFileComponent } from './components';
 
 const COMPONENTS = [SimpleInputFileComponent];
 
 @NgModule({
-  declarations: [
-    COMPONENTS
-  ],
+  declarations: [COMPONENTS],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    TuiInputFilesModule
+    TuiInputFilesModule,
+    TuiErrorModule,
+    TuiFieldErrorPipeModule,
   ],
-  exports: [
-    SimpleInputFileComponent
-  ]
+  exports: [SimpleInputFileComponent],
 })
-export class SimpleInputFileModule { }
+export class SimpleInputFileModule {}

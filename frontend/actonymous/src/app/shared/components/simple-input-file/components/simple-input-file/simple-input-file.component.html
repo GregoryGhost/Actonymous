@@ -1,6 +1,7 @@
 <tui-input-files
   *ngIf="!fileControl.value"
   [formControl]="fileControl"
+  [required]="required"
 ></tui-input-files>
 <tui-files class="tui-space_top-1">
   <tui-file
@@ -9,3 +10,7 @@
     (removed)="removeFile()"
   ></tui-file>
 </tui-files>
+<tui-error
+  [formControl]="fileControl"
+  [error]="[] | tuiFieldError | async"
+></tui-error>

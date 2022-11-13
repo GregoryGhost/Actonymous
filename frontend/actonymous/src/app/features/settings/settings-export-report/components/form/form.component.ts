@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TuiFileLike } from '@taiga-ui/kit';
 import { MainForm } from 'src/app/shared';
@@ -35,6 +35,7 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {}
 
   public submit(): void {
+    this.pageForm.markAllAsTouched();
     if (this.pageForm.invalid) {
       return;
     }

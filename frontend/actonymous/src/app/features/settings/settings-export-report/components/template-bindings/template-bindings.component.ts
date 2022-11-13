@@ -1,30 +1,24 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  forwardRef,
-  Input,
-  OnInit,
+  forwardRef, OnInit
 } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
-  FormGroup,
-  NG_VALIDATORS,
+  FormControl, NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  Validators,
+  Validators
 } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import {
-  TuiFileLike,
-  TuiFileState,
-  TUI_VALIDATION_ERRORS,
+  TuiFileLike, TUI_VALIDATION_ERRORS
 } from '@taiga-ui/kit';
 import {
   BaseMainFormGroup,
   MainForm,
   maxLengthValidator,
   minLengthValidator,
-  requiredInputMsg,
+  requiredInputMsg
 } from 'src/app/shared';
 import { ContractInfo, TemplateBindingsInfo } from '../../models';
 
@@ -99,10 +93,10 @@ export class TemplateBindingsComponent
         validators: [Validators.required],
       }
     );
-    const actTemplateFile = fb.nonNullable.control<TuiFileLike | null>(null, {
+    const actTemplateFile = fb.control<TuiFileLike | null>(null, {
       validators: [Validators.required],
     });
-    const taskTemplateFile = fb.nonNullable.control<TuiFileLike | null>(null, {
+    const taskTemplateFile = fb.control<TuiFileLike | null>(null, {
       validators: [Validators.required],
     });
 
