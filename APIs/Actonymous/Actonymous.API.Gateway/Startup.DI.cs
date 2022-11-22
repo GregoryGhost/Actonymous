@@ -1,6 +1,11 @@
 ﻿namespace Actonymous.API.Gateway;
 
+using Actonymous.API.Gateway.Settings.ExportReport.APIs;
 using Actonymous.API.Gateway.Shared.Services.Pagination;
+
+using Grpc.Net.ClientFactory;
+
+using JiraWorklogManager.V1;
 
 public static class StartupDi
 {
@@ -26,30 +31,32 @@ public static class StartupDi
                .AddInMemorySubscriptions()
            
                .AddQueryType(t => t.Name("Query"))
-               .AddTypeExtension<ProductsQuery>()
-               .AddTypeExtension<ProductsSynchronizationQuery>()
+               .AddTypeExtension<Query>()
            
                .AddMutationType(t => t.Name("Mutation"))
-               .AddTypeExtension<ProductsMutation>()
-               .AddTypeExtension<ProductsSynchronizationMutation>()
+               .AddTypeExtension<Mutation>()
            
-               .AddSubscriptionType(t => t.Name("Subscription"))
-               .AddTypeExtension<ProductsSubscription>()
-               .AddTypeExtension<ProductsSycnhronizationSubscription>();
+               .AddSubscriptionType(t => t.Name("Subscription"));
     }
 
     private static void RegisterGrpcClients(WebApplicationBuilder builder)
     {
-        builder.Services.AddGrpcClient<Merchandiser.V1.Merchandiser.MerchandiserClient>(
-                   options =>
-                   {
-                       var jiraWorklogManagerAddress = Environment.GetEnvironmentVariable("API_JIRA_WORKLOG_MANAGER_ADDRESS");
-                       if (string.IsNullOrWhiteSpace(jiraWorklogManagerAddress))
-                           throw new Exception("You must provide correct merchandiser address.");
-
-                       options.Address = new Uri(jiraWorklogManagerAddress);
-                   })
+        builder.Services.AddGrpcClient<JiraWorklogManager.JiraWorklogManagerClient>(SetJiraWorklogManagerClientOptions)
                .ConfigureChannel(
                    options => { options.UnsafeUseInsecureChannelCallCredentials = true; });
+    }
+
+    private static void SetJiraWorklogManagerClientOptions(GrpcClientFactoryOptions options)
+    {
+        SetClientOptions("JIRA_WORKLOG_MANAGER_ADDRESS", options);
+    }
+
+    private static void SetClientOptions(string environmentVariable, GrpcClientFactoryOptions options)
+    {
+        var apiAddress = Environment.GetEnvironmentVariable(environmentVariable);
+        if (string.IsNullOrWhiteSpace(apiAddress))
+            throw new Exception("You must provide correct  address.");
+
+        options.Address = new Uri(apiAddress);
     }
 }

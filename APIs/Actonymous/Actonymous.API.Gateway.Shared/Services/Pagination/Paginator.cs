@@ -1,5 +1,11 @@
 ﻿namespace Actonymous.API.Gateway.Shared.Services.Pagination;
 
+using HotChocolate.Types.Pagination;
+
+using JetBrains.Annotations;
+
+using PaginationOptions;
+
 [UsedImplicitly]
 public class Paginator
 {

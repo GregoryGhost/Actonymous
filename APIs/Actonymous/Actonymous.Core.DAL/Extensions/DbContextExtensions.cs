@@ -1,4 +1,4 @@
-﻿namespace Itadakimasu.Core.DAL;
+﻿namespace Actonymous.Core.DAL.Extensions;
 
 using Microsoft.EntityFrameworkCore;
 

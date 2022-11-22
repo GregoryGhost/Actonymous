@@ -1,5 +1,10 @@
 ﻿namespace Actonymous.API.Gateway.Shared.DTOs.Pagination;
 
+using HotChocolate;
+using HotChocolate.Types;
+
+using JetBrains.Annotations;
+
 [UsedImplicitly]
 public record PaginationSettings
 {

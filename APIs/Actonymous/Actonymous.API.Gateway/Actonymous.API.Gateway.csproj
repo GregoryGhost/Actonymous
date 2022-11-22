@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Actonymous.API.Gateway.Settings.ExportReport\Actonymous.API.Gateway.Settings.ExportReport.csproj" />
       <ProjectReference Include="..\Actonymous.API.Gateway.Shared\Actonymous.API.Gateway.Shared.csproj" />
     </ItemGroup>
 

@@ -7,4 +7,13 @@
         <WarningsAsErrors>Nullable</WarningsAsErrors>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Actonymous.API.Gateway.Settings.ExportReport.Domain\Actonymous.API.Gateway.Settings.ExportReport.Domain.csproj" />
+      <ProjectReference Include="..\Actonymous.API.Gateway.Shared\Actonymous.API.Gateway.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

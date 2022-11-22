@@ -14,7 +14,8 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7230;http://localhost:5017",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JIRA_WORKLOG_MANAGER_ADDRESS": "http://localhost:5220"
       }
     },
     "IIS Express": {

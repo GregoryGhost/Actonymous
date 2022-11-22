@@ -1,4 +1,4 @@
-﻿namespace Itadakimasu.Core.DAL;
+﻿namespace Actonymous.Core.DAL.BaseEntities;
 
 public abstract class BaseEntity
 {
