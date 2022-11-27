@@ -1,7 +1,8 @@
 ﻿namespace Actonymous.API.Gateway;
 
-using Actonymous.API.Gateway.Settings.ExportReport.APIs;
+using Actonymous.API.Gateway.Settings.ExportReport.ModuleSettings;
 using Actonymous.API.Gateway.Shared.Services.Pagination;
+using Actonymous.Core.Module.Extensions;
 
 using Grpc.Net.ClientFactory;
 
@@ -11,7 +12,7 @@ public static class StartupDi
 {
     public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
     {
-        RegisterGraphQlTypes(builder);
+        RegisterGraphQlModules(builder);
         RegisterGrpcClients(builder);
 
         RegisterStaffServices(builder);
@@ -24,19 +25,18 @@ public static class StartupDi
         builder.Services.AddSingleton<Paginator>();
     }
 
-    private static void RegisterGraphQlTypes(WebApplicationBuilder builder)
+    private static void RegisterGraphQlModules(WebApplicationBuilder builder)
     {
-        builder.Services
+        var graphQlServer = builder.Services
                .AddGraphQLServer()
-               .AddInMemorySubscriptions()
-           
-               .AddQueryType(t => t.Name("Query"))
-               .AddTypeExtension<Query>()
-           
-               .AddMutationType(t => t.Name("Mutation"))
-               .AddTypeExtension<Mutation>()
-           
-               .AddSubscriptionType(t => t.Name("Subscription"));
+               .AddInMemorySubscriptions();
+
+        var modules = new[]
+        {
+            new ExportReportModuleSettings()
+        };
+        
+        modules.RegisterModules(graphQlServer);
     }
 
     private static void RegisterGrpcClients(WebApplicationBuilder builder)

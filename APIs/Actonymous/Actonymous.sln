@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actonymous.API.Gateway.Sett
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actonymous.API.Gateway.Settings.ExportReport.Domain", "Actonymous.API.Gateway.Settings.ExportReport.Domain\Actonymous.API.Gateway.Settings.ExportReport.Domain.csproj", "{A7EB913A-810D-4D22-A84A-DDC923CB21C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actonymous.Core.Module", "Actonymous.Core.Module\Actonymous.Core.Module.csproj", "{01E51745-AF89-4312-97B3-D705BC88D28B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{A7EB913A-810D-4D22-A84A-DDC923CB21C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7EB913A-810D-4D22-A84A-DDC923CB21C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7EB913A-810D-4D22-A84A-DDC923CB21C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E51745-AF89-4312-97B3-D705BC88D28B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E51745-AF89-4312-97B3-D705BC88D28B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E51745-AF89-4312-97B3-D705BC88D28B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E51745-AF89-4312-97B3-D705BC88D28B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{543B51D7-4A47-4356-ACF3-4E3F8A21B77A} = {D9FE5343-09D4-4EEB-8A2E-09F64DFAF901}
@@ -87,5 +93,6 @@ Global
 		{E98933D0-E3C7-4DDF-8BCF-4ED2DB11B403} = {B6AD6A15-9333-4883-97E6-C1F2A38F4DAD}
 		{7359A435-2FB0-443A-9EE0-6B5D78D97BEF} = {B6AD6A15-9333-4883-97E6-C1F2A38F4DAD}
 		{A7EB913A-810D-4D22-A84A-DDC923CB21C4} = {B6AD6A15-9333-4883-97E6-C1F2A38F4DAD}
+		{01E51745-AF89-4312-97B3-D705BC88D28B} = {F59DEB0B-B6B4-4F32-BA49-7FA6B40A7203}
 	EndGlobalSection
 EndGlobal
