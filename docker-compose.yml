@@ -1,0 +1,83 @@
+version: '3.9'
+
+volumes:
+  postgresql-data:
+
+networks:
+  api-network:
+    driver: bridge
+
+services:
+  api_gateway:
+    depends_on:
+      api_jira_worklog_manager:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./APIs/Actonymous/Actonymous.API.Gateway/Dockerfile
+    environment:
+      API_PRODUCTS_ADDRESS: ${API_JIRA_WORKLOG_MANAGER_ADDRESS}
+      DOTNET_RUNNING_IN_CONTAINER: ${DOTNET_RUNNING_IN_CONTAINER}
+      RABBITMQ_ADDRESS: ${RABBITMQ_ADDRESS}
+      RABBITMQ_LOGIN: ${RABBITMQ_LOGIN}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5243:80"
+      - "5244:443"
+    networks:
+      - api-network
+
+  rabbitmq:
+    image: "masstransit/rabbitmq:${RABBITMQ_TAG}"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+     - "15692:15692"
+    networks:
+      - api-network
+
+  db:
+    image: postgres:${POSTGRES_TAG}
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    user: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./Configs/Database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - "postgresql-data:/var/lib/postgresql/data"
+    networks:
+      - api-network
+
+  api_jira_worklog_manager:
+    # TODO: replace curl on dotnet tools for health checking
+    # healthcheck:
+    #   test: curl --silent --fail http://api_products:80/health || exit 1
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
+    build:
+      context: .
+      dockerfile: ./APIs/JiraWorklogManager/Dockerfile
+    ports:
+      - "5218:80"
+      - "5219:443"
+    networks:
+      - api-network

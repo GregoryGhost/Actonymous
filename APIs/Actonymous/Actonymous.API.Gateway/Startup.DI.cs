@@ -1,6 +1,7 @@
 ﻿namespace Actonymous.API.Gateway;
 
 using Actonymous.API.Gateway.Settings.ExportReport.ModuleSettings;
+using Actonymous.API.Gateway.Shared.Extensions;
 using Actonymous.API.Gateway.Shared.Services.Pagination;
 using Actonymous.Core.Module.Extensions;
 
@@ -48,15 +49,6 @@ public static class StartupDi
 
     private static void SetJiraWorklogManagerClientOptions(GrpcClientFactoryOptions options)
     {
-        SetClientOptions("JIRA_WORKLOG_MANAGER_ADDRESS", options);
-    }
-
-    private static void SetClientOptions(string environmentVariable, GrpcClientFactoryOptions options)
-    {
-        var apiAddress = Environment.GetEnvironmentVariable(environmentVariable);
-        if (string.IsNullOrWhiteSpace(apiAddress))
-            throw new Exception("You must provide correct  address.");
-
-        options.Address = new Uri(apiAddress);
+        StartupDiHelper.SetClientOptions("JIRA_WORKLOG_MANAGER_ADDRESS", options);
     }
 }
