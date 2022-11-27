@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 using Mapper = Actonymous.API.Gateway.Settings.ExportReport.Services.Mapper;
 
 [PublicAPI]
-[ExtendObjectType(Name = "Mutation")]
+[ExtendObjectType("Mutation")]
 public class Mutation
 {
     private readonly ExportReportSettingsService _exportReportSettingsService;

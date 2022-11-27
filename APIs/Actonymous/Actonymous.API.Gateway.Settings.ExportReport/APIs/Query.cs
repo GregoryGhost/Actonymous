@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 using Mapper = Actonymous.API.Gateway.Settings.ExportReport.Services.Mapper;
 
 [PublicAPI]
-[ExtendObjectType(Name = "Query")]
+[ExtendObjectType("Query")]
 public class Query
 {
     private readonly Mapper _mapper;
