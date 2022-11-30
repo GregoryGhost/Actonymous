@@ -1,7 +1,10 @@
 from dataclasses import dataclass
 from datetime import datetime
 import json
-from typing import List, Tuple, final
+from typing import Any, Dict, List, Optional, Tuple, final
+from dataclasses_json import dataclass_json
+from jira.resources import Issue
+from jira.client import ResultList
 
 
 @final
@@ -60,13 +63,14 @@ class JiraInfo:
         self.basic_auth = basic_auth
 
 
-@final
+@dataclass
+@dataclass_json
 class UserWorklogItemDto:
-    task_code: str = ""
-    task_name: str = ""
-    start_period_date: datetime = None  # type: ignore
-    end_period_date: datetime = None  # type: ignore
-    time_spent_seconds: int = 0
+    task_code: str
+    task_name: str
+    start_period_date: datetime
+    end_period_date: datetime
+    time_spent_seconds: int
 
     def __init__(
         self,
@@ -84,12 +88,23 @@ class UserWorklogItemDto:
 
 
 @final
-class UserWorklogItemDtoEncoder(json.JSONEncoder):
-    def default(self, o: UserWorklogItemDto):
-        return o.__dict__
-
-@final
 @dataclass
 class DateRange:
     start_date: datetime
     end_date: datetime
+
+
+FoundJiraIssues = Dict[str, Any] | ResultList[Issue]
+
+WorklogPeriod = Optional[Tuple[datetime, datetime]]
+
+MappedUserWorklog = Optional[UserWorklogItemDto]
+
+UserWorklogs = list[MappedUserWorklog]
+
+@final
+@dataclass
+class UserWorklogsInfo:
+    issues: FoundJiraIssues
+    worklogs_data_range: DateRange
+    user_login: str

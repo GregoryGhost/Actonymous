@@ -14,18 +14,10 @@
 #     server.add_insecure_port("[::]:50051")
 #     server.start()
 #     server.wait_for_termination()
-from pylatex import Document, NoEscape
-
-def generate_act_doc():
-    with open("./notebook/test_acts.tex", encoding="utf-8") as f:
-        text_str = f.read()
-        doc = Document("test_acts_my_generation")
-        doc.append(NoEscape(text_str))
-        doc.generate_pdf(clean_tex=False, compiler="lualatex")
+from jira_worklog_manager_domain import jira_dtos, jira_helpers
 
 
 if __name__ == "__main__":
-    generate_act_doc()
-    print('kekw')
+    print("ha")
     # logging.basicConfig()
     # serve()
