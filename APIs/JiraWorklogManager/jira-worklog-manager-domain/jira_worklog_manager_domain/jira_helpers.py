@@ -77,6 +77,18 @@ def is_intersected(worklog: Worklog, date_range: jira_dtos.DateRange) -> bool:
     )
 
 
+def map_user_worklog_item(worklog: Worklog) -> jira_dtos.UserWorklogInfo:
+    created_date = dateutil.parser.isoparse(worklog.created)
+    time_spent_seconds = int(worklog.timeSpentSeconds)
+    user_worklog_info = jira_dtos.UserWorklogInfo(
+        comment=worklog.comment,
+        created_date=created_date,
+        time_spent_seconds=time_spent_seconds,
+    )
+
+    return user_worklog_info
+
+
 def get_user_worklogs(
     issue: Issue, user_login: str, date_range: jira_dtos.DateRange
 ) -> jira_dtos.JiraWorklogs:
@@ -86,11 +98,7 @@ def get_user_worklogs(
         worklogs,
     )
     worklogs = map(
-        lambda x: jira_dtos.UserWorklogInfo(  # TODO: split on different function
-            comment=x.comment,
-            created_date=dateutil.parser.isoparse(x.created),
-            time_spent_seconds=int(x.timeSpentSeconds),
-        ),
+        map_user_worklog_item,
         worklogs,
     )
     worklogs = list(worklogs)
@@ -104,7 +112,6 @@ def map_issues(
     issue_code = issue.key
     issue_name = issue.fields.summary
     worklogs = get_user_worklogs(issue, user_login, data_range)
-    # json_worklogs = json.dumps(worklogs, cls = UserWorklogInfoEncoder)
     mapped = jira_dtos.JiraIssue(code=issue_code, name=issue_name, worklogs=worklogs)
 
     return mapped
