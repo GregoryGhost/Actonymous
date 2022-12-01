@@ -24,7 +24,8 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "jira-worklog-manager-domain>=0.0.1"
+  "jira-worklog-manager-domain>=0.0.1",
+  "jira>=3.4.0"
 ]
 dynamic = ["version"]
 
