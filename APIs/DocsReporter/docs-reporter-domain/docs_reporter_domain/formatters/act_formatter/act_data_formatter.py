@@ -1,17 +1,10 @@
 from dataclasses import dataclass
 from typing import final
-from jira_dtos import UserWorklogItemDto
 
+from ..tex_helpers import ITemplateInfo
 
-@final
-@dataclass
-class ActRecord:
-    column_number: int
-    service_name: str
-    time_spent_in_hours: float
-
-
-ActRecords = list[ActRecord]
+from .act_dtos import ActRecord, ActRecords, ActReport
+from jira_dtos import MappedUserWorklogs, UserWorklogItemDto
 
 
 def map_act_record(worklog: UserWorklogItemDto, index: int) -> ActRecord:
@@ -36,17 +29,6 @@ def format_act_records(worklogs: MappedUserWorklogs) -> ActRecords:
     return act_records
 
 
-@final
-@dataclass
-class ActReport:
-    act: ContractInfo
-    contract: ContractInfo
-    supplementary_agreement: ContractInfo
-    work_info: WorkInfo
-    act_records: ActRecords
-    contract_parties_info: ContractPartiesInfo
-
-
 def format_act_report(data: ITemplateInfo) -> ActReport:
     act_records = format_act_records(data.worklogs)
     report = ActReport(
@@ -59,7 +41,6 @@ def format_act_report(data: ITemplateInfo) -> ActReport:
     )
 
     return report
-
 
 @final
 @dataclass

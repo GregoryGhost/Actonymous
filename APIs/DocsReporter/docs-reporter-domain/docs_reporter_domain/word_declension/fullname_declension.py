@@ -1,6 +1,9 @@
 from dataclasses import dataclass
+import sys
 from dataclasses_json import dataclass_json, Undefined
 from typing import Optional, final
+
+from template_dtos import InclinedInfo
 
 
 @dataclass_json

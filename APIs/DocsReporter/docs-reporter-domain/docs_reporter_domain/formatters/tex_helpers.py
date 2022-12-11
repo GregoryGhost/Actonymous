@@ -5,8 +5,11 @@ from pathlib import Path
 import os
 from abc import ABCMeta, abstractmethod
 import jinja2
-from jira_helpers import MappedUserWorklog
 from typing import final
+from jira_dtos import MappedUserWorklogs
+from template_dtos import ContractPartiesInfo, ContractsInfo
+
+from tex_dtos import ActJinjaTemplate, JinjaTemplate, TaskJinjaTemplate
 
 
 def get_doc_template(filename: str) -> JinjaTemplate:

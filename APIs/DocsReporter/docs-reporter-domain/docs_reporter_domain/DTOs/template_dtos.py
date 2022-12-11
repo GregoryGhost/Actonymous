@@ -1,29 +1,5 @@
-@dataclass
-class JinjaTemplate:
-    template: jinja2.Template
-    template_name: str = ""
-
-
-@final
-@dataclass
-class ActJinjaTemplate(JinjaTemplate):
-    pass
-
-
-@final
-@dataclass
-class TaskJinjaTemplate(JinjaTemplate):
-    pass
-
-JinjaTemplates = list[JinjaTemplate]
-
-from abc import ABCMeta, abstractmethod
-import jinja2
-from jira_helpers import MappedUserWorklog
+from dataclasses import dataclass
 from typing import final
-
-
-MappedUserWorklogs = list[MappedUserWorklog]
 
 
 @final

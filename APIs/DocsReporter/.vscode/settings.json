@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./docs-reporter-domain/docs_reporter_domain/DTOs"
+    ]
+}

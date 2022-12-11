@@ -1,4 +1,26 @@
-from jira_dtos import UserWorklogItemDto
+from docs_reporter_domain import (
+    MappedUserWorklogs,
+    UserWorklogItemDto,
+    incline_cost,
+    CostInfo,
+    WorkInfo,
+    ContractInfo,
+    incline_fullname,
+    ContractsInfo,
+    CompanyInfo,
+    unwrap_inclined_fullname,
+    unwrap_inclined_header_position,
+    ContractPartiesInfo,
+    JinjaTemplates,
+    get_task_doc_template,
+    get_act_doc_template,
+    JinjaTemplate,
+    ActJinjaTemplate,
+    ITemplateInfo,
+    ActData,
+    TaskJinjaTemplate,
+    TaskData
+)
 
 
 def get_jira_worklogs() -> MappedUserWorklogs:
@@ -6,8 +28,6 @@ def get_jira_worklogs() -> MappedUserWorklogs:
     worklogs = UserWorklogItemDto.schema().loads(worklogs_str, many=True)
 
     return worklogs
-
-from math import trunc
 
 
 def zpad(val: float, n: int) -> str:
@@ -119,6 +139,7 @@ def get_contracts_info() -> ContractsInfo:
 
     return contracts_info
 
+
 def get_customer() -> CompanyInfo:
     header_fullname_initials_in_end = unwrap_inclined_fullname("Киетака А.Х.")
     header_fullname_initials_in_front = unwrap_inclined_fullname("А.Х. Киетака")
@@ -163,8 +184,10 @@ def get_contract_parties_info() -> ContractPartiesInfo:
 
     return info
 
+
 def get_doc_templates() -> JinjaTemplates:
     return [get_act_doc_template(), get_task_doc_template()]
+
 
 def get_template_info(
     template: JinjaTemplate,

@@ -1,28 +1,10 @@
 from dataclasses import dataclass
 from typing import Any, final
-from pylatex import (
-    Document,
-    Section,
-    Subsection,
-    Tabular,
-    MultiColumn,
-    MultiRow,
-    Command,
-)
-from jira_helpers import MappedUserWorklog
-from jira_dtos import UserWorklogItemDto
-from pylatex.utils import bold
 
+from ..tex_helpers import ITemplateInfo
 
-@final
-@dataclass
-class TaskRecord:
-    column_number: int
-    service_name: str
-    validity: str
-
-
-TaskRecords = list[TaskRecord]
+from .task_dtos import TaskRecord, TaskRecords, TaskReport
+from jira_dtos import MappedUserWorklogs, UserWorklogItemDto
 
 
 def map_task_record(worklog: UserWorklogItemDto, index: int) -> TaskRecord:
@@ -45,17 +27,6 @@ def format_task_records(worklogs: MappedUserWorklogs) -> TaskRecords:
     task_records = list(task_records)
 
     return task_records
-
-
-@final
-@dataclass
-class TaskReport:
-    task: ContractInfo
-    contract: ContractInfo
-    supplementary_agreement: ContractInfo
-    work_info: WorkInfo
-    task_records: TaskRecords
-    contract_parties_info: ContractPartiesInfo
 
 
 def format_task_report(data: ITemplateInfo) -> TaskReport:
