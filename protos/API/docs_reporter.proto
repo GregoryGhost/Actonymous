@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package docs_reporter.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+// The docs reporter service definition.
+service DocsReporter { 
+  // Get formatted reports docs by user data.
+  rpc GetReportDocs(UserReportingDataDto) returns (ReportDocsInfoDto);
+}
+
+// User data for getting report docs.
+message UserReportingDataDto {
+    // User worklogs for period.
+    UserWorklogsDto worklogs = 1;
+    // Report templates to format report docs.
+    FilePackagesDto report_templates = 2;
+    // Contracts information.
+    ContractsInfoDto contracts_info = 3;
+    // Contracts parties information.
+    ContractsPartiesInfoDto contracts_parties_info = 4;
+}
+
+// Information about processed user reporting data.
+message ReportDocsInfoDto {
+    oneof kind {
+      // It returns when something went wrong.
+      google.protobuf.NullValue null = 1;
+      // Formatted user report docs.
+      ReportDocsDto report_docs = 2; 
+    }
+}
+
+// Contracts information.
+message ContractsInfoDto {
+    // Act document information.
+    ContractInfoDto act = 1;
+    // Contract document information.
+    ContractInfoDto contract = 2;
+    // Supplementray agreement information.
+    ContractInfoDto supplementary_agreement = 3;
+}
+
+// Contracts information.
+message ContractInfoDto {
+    // Approval date between parties.
+    google.protobuf.Timestamp approval_date = 1;
+    // Document number.
+    string number = 2;
+}
+
+// Company information.
+message CompanyInfoDto {
+    // Company header fullname.
+    string header_fullname = 1;
+    // Company header position.
+    string header_position = 2;
+    // Company name.
+    string company_name = 3;
+}
+
+// Executor information.
+message ExecutorInfoDto {
+    // Executor company information.
+    ContractInfoDto company_info = 1;
+    // Executor rate per hour.
+    decimal rate_per_hour = 2;
+}
+
+// Contracts parties information.
+message ContractsPartiesInfoDto {
+    // Customer information.
+    CompanyInfoDto customer = 1;
+    // Executor information.
+    ExecutorInfoDto executor = 2;
+}
+
+// Formatted user report docs.
+message ReportDocsDto {
+    bytes docs_package = 1;
+    PackageType package_type = 2;
+}
+
+// Available docs package types.
+message PackageTypeDto {
+    oneof kind {
+        // Document is archive type.
+        ArchivePackageTypeDto archive_type = 1;
+    }
+}
+
+// It's archive type to indicate package type.
+message ArchivePackageTypeDto {
+}
+
+// A User worklog information.
+message UserWorklogInfoDto {
+  oneof kind {
+    // It returns when something went wrong.
+    google.protobuf.NullValue null = 1;
+    // Jira user worklogs.
+    UserWorklogsDto worklogs = 2; 
+  }
+}
+
+// Jira user worklogs.
+message UserWorklogsDto {
+  // Worklogs.
+  repeated UserWorklogItemDto worklogs = 1;
+}
+
+// A user worklog on the task.
+message UserWorklogItemDto {
+  // A task code.
+  string task_code = 1;
+
+  // A task name.
+  string task_name = 2;
+
+  // The beginning of the working period on the task.
+  google.protobuf.Timestamp start_period_date = 3;
+
+  // End of the task period.
+  google.protobuf.Timestamp end_period_date = 4;
+
+  // Time spent on the task by user (in seconds).
+  fixed64 time_spent_seconds = 5;
+}
