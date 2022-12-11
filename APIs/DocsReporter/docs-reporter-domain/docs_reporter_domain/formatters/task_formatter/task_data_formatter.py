@@ -4,7 +4,7 @@ from typing import Any, final
 from ..tex_helpers import ITemplateInfo
 
 from .task_dtos import TaskRecord, TaskRecords, TaskReport
-from jira_dtos import MappedUserWorklogs, UserWorklogItemDto
+from ...DTOs import MappedUserWorklogs, UserWorklogItemDto
 
 
 def map_task_record(worklog: UserWorklogItemDto, index: int) -> TaskRecord:

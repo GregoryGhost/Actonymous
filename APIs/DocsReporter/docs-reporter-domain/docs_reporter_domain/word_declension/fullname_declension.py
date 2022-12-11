@@ -3,7 +3,7 @@ import sys
 from dataclasses_json import dataclass_json, Undefined
 from typing import Optional, final
 
-from template_dtos import InclinedInfo
+from ..DTOs import InclinedInfo
 
 
 @dataclass_json

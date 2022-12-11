@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import final
 
-from template_dtos import ContractInfo, ContractPartiesInfo, WorkInfo
+from ...DTOs import ContractInfo, ContractPartiesInfo, WorkInfo
 
 
 @final

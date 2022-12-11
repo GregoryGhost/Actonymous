@@ -4,8 +4,8 @@ from typing import final
 from ..tex_helpers import ITemplateInfo
 
 from .act_dtos import ActRecord, ActRecords, ActReport
-from jira_dtos import MappedUserWorklogs, UserWorklogItemDto
 
+from ...DTOs import UserWorklogItemDto, MappedUserWorklogs
 
 def map_act_record(worklog: UserWorklogItemDto, index: int) -> ActRecord:
     service_name = f"{worklog.task_code}. {worklog.task_name}"

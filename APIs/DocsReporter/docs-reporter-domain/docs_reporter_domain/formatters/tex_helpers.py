@@ -6,27 +6,17 @@ import os
 from abc import ABCMeta, abstractmethod
 import jinja2
 from typing import final
-from jira_dtos import MappedUserWorklogs
-from template_dtos import ContractPartiesInfo, ContractsInfo
-
-from tex_dtos import ActJinjaTemplate, JinjaTemplate, TaskJinjaTemplate
+from ..DTOs import MappedUserWorklogs, ContractPartiesInfo, ContractsInfo, ActJinjaTemplate, JinjaTemplate, TaskJinjaTemplate
 
 
-def get_doc_template(filename: str) -> JinjaTemplate:
-    templateLoader = jinja2.FileSystemLoader(searchpath="./templates/")
+def get_doc_template(filename: str, templates_folder: str) -> JinjaTemplate:
+    templateLoader = jinja2.FileSystemLoader(searchpath=templates_folder)
     templateEnv = jinja2.Environment(loader=templateLoader)
     template = templateEnv.get_template(filename)
     template_name = Path(filename).stem
     jinja_template = JinjaTemplate(template=template, template_name=template_name)
 
     return jinja_template
-
-
-def get_file_path_in_cur_dir(file_name_path: Path) -> Path:
-    current_dir = os.path.abspath("")
-    path = Path(current_dir, file_name_path)
-
-    return path
 
 
 RenderedTexData = str
@@ -39,26 +29,25 @@ def get_tex_path(template_name: str) -> Path:
     return file_path
 
 
-def write_tex_file(template_name: str, data: RenderedTexData) -> Path:
+def write_tex_file(template_name: str, data: RenderedTexData, path_to_save: Path) -> Path:
     file_name_path = get_tex_path(template_name)
-    path = get_file_path_in_cur_dir(file_name_path)
+    path = Path(path_to_save, file_name_path)
     with open(path, "w", encoding="utf-8") as fp:
         fp.write(data)
 
     return path
 
 
-def get_act_doc_template() -> JinjaTemplate:
-    template = get_doc_template("act.jinja")
+def get_act_doc_template(templates_folder: str) -> JinjaTemplate:
+    template = get_doc_template("act.jinja", templates_folder)
     act_template = ActJinjaTemplate(
         template=template.template, template_name=template.template_name
     )
 
     return act_template
 
-
-def get_task_doc_template() -> JinjaTemplate:
-    template = get_doc_template("task.jinja")
+def get_task_doc_template(templates_folder: str) -> JinjaTemplate:
+    template = get_doc_template("task.jinja", templates_folder)
     act_template = TaskJinjaTemplate(
         template=template.template, template_name=template.template_name
     )
@@ -85,10 +74,10 @@ class ITemplateInfo(metaclass=ABCMeta):
         return rendered_tex_data
 
 
-def format_tex_file_by_doc_template(info: ITemplateInfo) -> Path:
+def format_tex_file_by_doc_template(info: ITemplateInfo, path_to_save: Path) -> Path:
     rendered_tex_data = info.render_template()
     wrotten_tex_file_path = write_tex_file(
-        info.doc_template.template_name, rendered_tex_data
+        info.doc_template.template_name, rendered_tex_data, path_to_save
     )
 
     return wrotten_tex_file_path
