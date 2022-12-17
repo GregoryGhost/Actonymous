@@ -3,11 +3,19 @@
 ```
 > python -m pip install grpcio
 > python -m pip install grpcio-tools
+> pip3 install mypy-protobuf
 ```
 [For more details](https://grpc.io/docs/languages/python/quickstart/)
+[For mor details mypy protobuff](https://github.com/nipunn1313/mypy-protobuf)
 
 ## Generate gRPC code
 Change current folder to the root project folder. After enter the next command:
 ```
-> python -m grpc_tools.protoc --proto_path=./protos/API/ jira_worklog_manager.proto --python_out=./APIs/JiraWorklogManager/generated/grpc --grpc_python_out=./APIs/JiraWorklogManager/generated/grpc --mypy_out=./APIs/JiraWorklogManager/generated/proto_typing
+> py -m grpc_tools.protoc --proto_path=./protos/API/ jira_worklog_manager.proto --python_out=./APIs/JiraWorklogManager/generated/grpc --grpc_python_out=./APIs/JiraWorklogManager/generated/grpc
+> py -m grpc_tools.protoc -I . --python_out=./APIs/DocsReporter/docs_reporter/generated/grpc --grpc_python_out=./APIs/DocsReporter/docs_reporter/generated/grpc ./protos/API/docs_reporter.proto
+```
+It's to generate Mypy typing for gRPC code:
+```
+> protoc --python_out=./APIs/JiraWorklogManager/generated/grpc --mypy_out=./APIs/JiraWorklogManager/generated/grpc ./protos/API/jira_worklog_manager.proto
+> protoc --python_out=./APIs/DocsReporter/docs_reporter/generated/grpc --mypy_out=./APIs/DocsReporter/docs_reporter/generated/grpc ./protos/API/docs_reporter.proto
 ```
