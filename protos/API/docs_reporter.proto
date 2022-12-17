@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package docs_reporter.v1;
 
+import "protos/Common/custom_types.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -29,7 +30,7 @@ message ReportDocsInfoDto {
       // It returns when something went wrong.
       google.protobuf.NullValue null = 1;
       // Formatted user report docs.
-      ReportDocsDto report_docs = 2; 
+      FilePackagesDto report_docs = 2; 
     }
 }
 
@@ -66,7 +67,7 @@ message ExecutorInfoDto {
     // Executor company information.
     ContractInfoDto company_info = 1;
     // Executor rate per hour.
-    decimal rate_per_hour = 2;
+    CustomTypes.DecimalValue rate_per_hour = 2;
 }
 
 // Contracts parties information.
@@ -77,10 +78,10 @@ message ContractsPartiesInfoDto {
     ExecutorInfoDto executor = 2;
 }
 
-// Formatted user report docs.
-message ReportDocsDto {
+// File package which contains any files inside.
+message FilePackagesDto {
     bytes docs_package = 1;
-    PackageType package_type = 2;
+    PackageTypeDto package_type = 2;
 }
 
 // Available docs package types.
