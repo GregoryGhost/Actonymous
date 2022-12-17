@@ -81,3 +81,20 @@ services:
       - "5219:443"
     networks:
       - api-network
+  
+  api_docs_reporter:
+    # TODO: replace curl on dotnet tools for health checking
+    # healthcheck:
+    #   test: curl --silent --fail http://api_products:80/health || exit 1
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
+    build:
+      context: .
+      dockerfile: ./APIs/DocsReporter/Dockerfile
+    ports:
+      - "5218:80"
+      - "5219:443"
+    networks:
+      - api-network
