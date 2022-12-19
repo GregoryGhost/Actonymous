@@ -6,7 +6,7 @@
     <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Protobuf Include="..\..\..\protos\API\jira_worklog_manager.proto">
+    <Protobuf Include="..\..\..\protos\API\jira_worklog_manager.proto" AdditionalImportDirs="..\..\..\">
       <GrpcServices>Client</GrpcServices>
       <Access>Public</Access>
       <ProtoCompile>True</ProtoCompile>
@@ -15,15 +15,16 @@
       <Generator>MSBuild:Compile</Generator>
       <Link>Protos\APIs\jira_worklog_manager.proto</Link>
     </Protobuf>
-    <Protobuf Include="Protos\API\*">
-      <GrpcServices>Both</GrpcServices>
+    <Protobuf Include="..\..\..\protos\API\docs_reporter.proto" AdditionalImportDirs="..\..\..\">
+      <GrpcServices>Client</GrpcServices>
       <Access>Public</Access>
       <ProtoCompile>True</ProtoCompile>
       <CompileOutputs>True</CompileOutputs>
       <OutputDir>obj\Debug\net6.0\</OutputDir>
       <Generator>MSBuild:Compile</Generator>
+      <Link>Protos\APIs\docs_reporter.proto</Link>
     </Protobuf>
-    <Protobuf Include="Protos\Common\*.proto">
+    <Protobuf Include="..\..\..\protos\Common\*.proto">
       <GrpcServices>Both</GrpcServices>
       <Access>Public</Access>
       <ProtoCompile>True</ProtoCompile>
@@ -38,5 +39,8 @@
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.50.0" />
     <PackageReference Include="Grpc.Tools" Version="2.50.0" PrivateAssets="All" />
     <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="protos\Common" />
   </ItemGroup>
 </Project>
