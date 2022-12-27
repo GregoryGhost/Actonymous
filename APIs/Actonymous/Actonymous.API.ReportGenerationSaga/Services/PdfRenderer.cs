@@ -45,7 +45,7 @@ public sealed class PdfRenderer: IConsumer<PdfRenderDto>
     }
 }
 
-internal record PdfRenderedDocsDto
+public record PdfRenderedDocsDto
 {
 }
 

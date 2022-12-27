@@ -12,7 +12,7 @@ public sealed class ReportSettingsExporter : IReportSettingsExporter
 {
     private readonly IBus _bus;
 
-    private readonly ExportReportSettingsDto _exportedReportSettings;
+    private readonly ExportedReportSettingsDto _exportedReportSettings;
 
     public ReportSettingsExporter(IBus bus)
     {
@@ -20,17 +20,17 @@ public sealed class ReportSettingsExporter : IReportSettingsExporter
         _exportedReportSettings = GetFakeReportSettings();
     }
 
-    private static ExportReportSettingsDto GetFakeReportSettings()
+    private static ExportedReportSettingsDto GetFakeReportSettings()
     {
         throw new NotImplementedException("TODO: need to take a real data from ReportSettingsExporter API microservice.");
     }
 
     /// <inheritdoc />
-    public async Task Consume(ConsumeContext<ExportingReportSettingsRequest> context)
+    public async Task Consume(ConsumeContext<ExportingReportSettingsDto> context)
     {
         var data = GetSettings();
 
-        await context.RespondAsync<ExportedReportSettingsResponse>(data);
+        await context.RespondAsync<ExportedReportSettingsDto>(data);
 
         //TODO: use when gRPC service will be ready
         // using var call = _reportSettingsExporter.GetSettings();
@@ -41,22 +41,18 @@ public sealed class ReportSettingsExporter : IReportSettingsExporter
         // await call.RequestStream.CompleteAsync();
     }
 
-    public ExportReportSettingsDto GetSettings()
+    public ExportedReportSettingsDto GetSettings()
     {
         return _exportedReportSettings;
     }
 }
 
-public record ExportedReportSettingsResponse : ExportReportSettingsDto
+public interface IReportSettingsExporter: IConsumer<ExportingReportSettingsDto>
 {
+    ExportedReportSettingsDto GetSettings();
 }
 
-public interface IReportSettingsExporter: IConsumer<ExportingReportSettingsRequest>
-{
-    ExportReportSettingsDto GetSettings();
-}
-
-public record ExportReportSettingsDto
+public record ExportedReportSettingsDto
 {
     public JiraCredentialsDto JiraCredentials { get; set; } = null!;
 
@@ -65,6 +61,6 @@ public record ExportReportSettingsDto
     public MorpherSettingsDto MorpherSettings { get; set; } = null!;
 }
 
-public record ExportingReportSettingsRequest
+public record ExportingReportSettingsDto
 {
 }

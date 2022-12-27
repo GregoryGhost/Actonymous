@@ -2,11 +2,19 @@
 {
     using System.Diagnostics;
 
+    using Actonymous.API.ReportGenerationSaga.PublicDTOs.DTOs;
+
+    using global::DocsReporter.V1;
+
     using Google.Protobuf.WellKnownTypes;
 
     using JetBrains.Annotations;
 
+    using JiraWorklogManager.V1;
+
     using MassTransit;
+
+    using UserWorklogInfoDto = JiraWorklogManager.V1.UserWorklogInfoDto;
 
     [UsedImplicitly]
     public sealed class ReportGenerationStateMachine : MassTransitStateMachine<ReportGenerationSagaState>
@@ -104,76 +112,52 @@
         //States
         public State GottenExportReportSettings { get; init; } = null!;
         
-        // Events
-        public Event<ExportedReportSettingsData> ReadyExportedReportSettingsData { get; init; } = null!;
-        public Event<UserWorklogData> ReadyUserWorklogData { get; init; } = null!;
-        public Event<DocsReportData> ReadyDocsReportData { get; init; } = null!;
-        public Event<PdfRenderData> ReadyPdfRenderData { get; init; } = null!;
-        public Event<DocsPackageData> ReadyDocsPackageData { get; init; } = null!;
-        
-        //Requests
+        public Event<ExportedReportSettingsDto> ReadyExportedReportSettingsData { get; init; } = null!;
+        public Event<UserWorklogInfoDto> ReadyUserWorklogData { get; init; } = null!;
+        public Event<PdfRenderedDocsDto> ReadyPdfRenderData { get; init; } = null!;
+        public Event<DocsPackageInfoDto> ReadyDocsPackageData { get; init; } = null!;
 
-        public Request<ReportGenerationSagaState, ExportingReportSettingsRequest, Empty> ExportReportSettingsRequest
+        public Request<ReportGenerationSagaState, ExportingReportSettingsDto, Empty> ExportReportSettingsRequest
         {
             get;
             init;
         } = null!;
         
-        public Request<ReportGenerationSagaState, UserWorklogRequest, Empty> GetUserWorklogsRequest
+        public Request<ReportGenerationSagaState, UserWorklogDto, Empty> GetUserWorklogsRequest
         {
             get;
             init;
         } = null!;
         
-        public Request<ReportGenerationSagaState, DocsReportRequest, Empty> GetDocsReportRequest
+        public Request<ReportGenerationSagaState, UserReportingDataDto, ReportDocsInfoDto> GetDocsReportRequest
         {
             get;
             init;
         } = null!;
         
-        public Request<ReportGenerationSagaState, PdfRenderRequest, Empty> GetPdfRenderRequest
+        public Request<ReportGenerationSagaState, PdfRenderDto, Empty> GetPdfRenderRequest
         {
             get;
             init;
         } = null!;
         
-        public Request<ReportGenerationSagaState, DocsPackageRequest, Empty> GetDocsPackageRequest
+        public Request<ReportGenerationSagaState, DocsPackageDto, Empty> GetDocsPackageRequest
         {
             get;
             init;
         } = null!;
-        ///------Below it's examples of describtion primitives.
-            
-        public State CreatedScrappingRestaurantProductsRequest { get; init; } = null!;
-
-        public State Failed { get; init; } = null!;
-
-        public State SynchronizedRestaurant { get; init; } = null!;
-
-        public State SynchronizingRestaurant { get; init; } = null!;
-
-        public Event<SynchronizeRestaurantProductsRequest> SynchronizeRestaurantProducts { get; init; } = null!;
-
-        public Event<SynchronizedRestaurantProductsRequest> ScrappedRestaurantProducts { get; init; } = null!;
-
-        public Event<SynchronizedData> GetSynchronizedRestaurant { get; init; } = null!;
-
-        public Request<ReportGenerationSagaState, SynchronizingData, Empty> SynchronizeRestaurantRequest { get; init; } = null!;
         
-        public Request<ReportGenerationSagaState, SynchronizationRestaurantRequest,
-            CreatedSynchronizationRestaurantRequest> CreateSynchronizationRequest { get; init; } = null!;
-
         private static async Task RespondFromSagaAsync(SagaConsumeContext<ReportGenerationSagaState> context, string error)
         {
             if (context.Saga.ResponseAddress is null)
             {
-                throw new Exception($"Provide {context.Saga.ResponseAddress} for send data to endpoint.");
+                throw new Exception($"Provide {context.Saga.ResponseAddress} to send data to endpoint.");
             }
             var endpoint = await context.GetSendEndpoint(context.Saga.ResponseAddress);
             await endpoint.Send(
-                new SynchronizeRestaurantProductsResponse
+                new ReportGenerationResponse
                 {
-                    RestaurantId = context.Saga.RestaurantId,
+                    ReportPackageLink = context.Saga.ReportPackageLink,
                     ErrorMessage = error
                 },
                 r => r.RequestId = context.Saga.RequestId);
