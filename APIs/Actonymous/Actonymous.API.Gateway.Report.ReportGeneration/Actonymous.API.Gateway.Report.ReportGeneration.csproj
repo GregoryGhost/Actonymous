@@ -7,4 +7,20 @@
         <WarningsAsErrors>Nullable</WarningsAsErrors>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
+      <PackageReference Include="MassTransit" Version="8.0.9" />
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Actonymous.API.Gateway.Shared\Actonymous.API.Gateway.Shared.csproj" />
+      <ProjectReference Include="..\Actonymous.API.ReportGenerationSaga.PublicDTOs\Actonymous.API.ReportGenerationSaga.PublicDTOs.csproj" />
+      <ProjectReference Include="..\Actonymous.Core.Module\Actonymous.Core.Module.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services" />
+    </ItemGroup>
+
 </Project>

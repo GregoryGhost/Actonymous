@@ -8,7 +8,7 @@ import "google/protobuf/timestamp.proto";
 // The jira worklog manager service definition.
 service JiraWorklogManager { 
   // Get paginated products by pagination options.
-  rpc ListProducts (stream UserWorklogDto) returns (stream UserWorklogInfoDto);
+  rpc GetUserWorklogs (stream UserWorklogDto) returns (stream UserWorklogInfoDto);
 }
 
 // Dto to get a user worklog information.

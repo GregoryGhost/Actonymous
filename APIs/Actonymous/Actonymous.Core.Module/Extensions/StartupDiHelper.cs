@@ -1,4 +1,4 @@
-﻿namespace Actonymous.API.Gateway.Shared.Extensions;
+﻿namespace Actonymous.Core.Module.Extensions;
 
 using Grpc.Net.ClientFactory;
 
@@ -8,7 +8,7 @@ public static class StartupDiHelper
     {
         var apiAddress = Environment.GetEnvironmentVariable(environmentVariable);
         if (string.IsNullOrWhiteSpace(apiAddress))
-            throw new Exception("You must provide correct  address.");
+            throw new Exception("You must provide correct address.");
 
         options.Address = new Uri(apiAddress);
     }

@@ -1,27 +1,28 @@
 ﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:30533",
-      "sslPort": 44362
+      "applicationUrl": "http://localhost:12213",
+      "sslPort": 44323
     }
   },
   "profiles": {
-    "Actonymous.API.Gateway": {
+    "Actonymous.API.Gateway.ReportGenerationSaga": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7230;http://localhost:5017",
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7148;http://localhost:5024",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "JIRA_WORKLOG_MANAGER_ADDRESS": "http://localhost:5220",
-        "DOCS_REPORTER_ADDRESS": "http://localhost:5221"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
