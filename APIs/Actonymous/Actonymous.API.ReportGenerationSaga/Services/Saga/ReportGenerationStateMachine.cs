@@ -25,28 +25,42 @@
         {
             _logger = logger;
             InstanceState(x => x.CurrentState);
-            Event(() => SynchronizeRestaurantProducts, 
+            Event(() => GenerateReport, 
+                x => 
+                    x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.)
+                     .SelectId(y => NewId.NextGuid()));
+            Event(() => ReadyReportSettingsData, 
                 x => 
                     x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RestaurantId)
                      .SelectId(y => NewId.NextGuid()));
             Event(
-                () => ScrappedRestaurantProducts,
+                () => ReadyUserWorklogData,
                 x =>
                     x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RequestId));
             Event(
-                () => GetSynchronizedRestaurant,
+                () => ReadyPdfRenderData,
                 x =>
                     x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RequestId));
-            Request(() => SynchronizeRestaurantRequest);
-            Request(() => CreateSynchronizationRequest);
+            Event(
+                () => ReadyPdfRenderData,
+                x =>
+                    x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RequestId));
+            Event(
+                () => ReadyDocsPackageData,
+                x =>
+                    x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RequestId));
+            Request(() => ExportReportSettingsRequest);
+            Request(() => GetUserWorklogsRequest);
+            Request(() => GetDocsReportRequest);
+            Request(() => GetPdfRenderRequest);
+            Request(() => GetDocsPackageRequest);
 
             Initially(
-
-                When(SynchronizeRestaurantProducts)
+                When(GenerateReport)
                     .Then(
                         x =>
                         {
-                            if (!x.TryGetPayload(out SagaConsumeContext<ReportGenerationSagaState, SynchronizeRestaurantProductsRequest>? payload))
+                            if (!x.TryGetPayload(out SagaConsumeContext<ReportGenerationSagaState, ReportGenerationRequest>? payload))
                                 throw new Exception("Unable to retrieve required payload for callback data.");
 
                             Debug.Assert(payload != null, nameof(payload) + " != null");
@@ -55,64 +69,110 @@
                             x.Saga.ResponseAddress = payload.ResponseAddress;
                             x.Saga.RestaurantId = payload.Message.RestaurantId;
                         })
-                    .Request(CreateSynchronizationRequest,
+                    .Request(ExportReportSettingsRequest,
                         x =>
                         {
-                            var data = new SynchronizationRestaurantRequest
+                            var data = new ExportingReportSettingsDto
                             {
-                                RestaurantId = x.Saga.RestaurantId
+                                //TOOD: init fields
                             };
                             
-                            return x.Init<SynchronizationRestaurantRequest>(data);
+                            return x.Init<ExportingReportSettingsDto>(data);
                         })
-                    .TransitionTo(CreateSynchronizationRequest.Pending)
+                    .TransitionTo(ExportingReportSettings)
+            );
+
+            During(
+                ExportingReportSettings,
+                When(ReadyReportSettingsData)
+                    .Request(GetUserWorklogsRequest,
+                        x =>
+                        {
+                            var data = new UserWorklogDto
+                            {
+                                //TODO: init fields
+                            };
+                            
+                            return x.Init<UserWorklogDto>(data);
+                        })
+                    .TransitionTo(ExportingUserWorklogs)
             );
             
             During(
-                CreateSynchronizationRequest.Pending,
-                When(CreateSynchronizationRequest.Completed)
-                    .Then(
+                ExportingUserWorklogs,
+                When(ReadyUserWorklogData)
+                    .Request(GetDocsReportRequest,
                         x =>
                         {
-                            x.Saga.SynchronizationRestaurantRequestId = x.Message.RequestId;
-                        })
-                    .TransitionTo(CreatedScrappingRestaurantProductsRequest)
-                );
-
-            During(
-                CreatedScrappingRestaurantProductsRequest,
-                When(ScrappedRestaurantProducts)
-                    .Request(SynchronizeRestaurantRequest,
-                        x =>
-                        {
-                            var data = new SynchronizingData
+                            var data = new UserReportingDataDto()
                             {
-                                RequestId = x.Saga.SynchronizationRestaurantRequestId
+                                //TODO: init fields
                             };
                             
-                            return x.Init<SynchronizingData>(data);
+                            return x.Init<UserReportingDataDto>(data);
                         })
-                    .TransitionTo(SynchronizingRestaurant)
+                    .TransitionTo(GetDocsReportRequest.Pending)
+            );
+            
+            During(
+                GetDocsReportRequest.Pending,
+                When(GetDocsReportRequest.Completed)
+                    .Request(GetPdfRenderRequest,
+                        x =>
+                        {
+                            var data = new PdfRenderDto()
+                            {
+                                //TODO: init fields
+                            };
+                            
+                            return x.Init<PdfRenderDto>(data);
+                        })
+                    .TransitionTo(MakingPdfRenderData)
+            );
+            
+            During(
+                MakingPdfRenderData,
+                When(ReadyPdfRenderData)
+                    .Request(GetDocsPackageRequest,
+                        x =>
+                        {
+                            var data = new DocsPackageDto
+                            {
+                                //TODO: init fields
+                            };
+                            
+                            return x.Init<DocsPackageDto>(data);
+                        })
+                    .TransitionTo(PackingDocsPackage)
+            );
+            
+            During(
+                PackingDocsPackage,
+                When(ReadyDocsPackageData)
+                    .TransitionTo(PackedDocsPackage)
             );
 
             During(
-                SynchronizingRestaurant,
-                When(GetSynchronizedRestaurant)
-                    .TransitionTo(SynchronizedRestaurant)
-                );
-
-            During(
-                SynchronizedRestaurant,
-                When(SynchronizedRestaurant.Enter)
+                PackedDocsPackage,
+                When(ReadyDocsPackageData)
                     .ThenAsync(async context => { await RespondFromSagaAsync(context, string.Empty); })
                     .Finalize()
             );
         }
 
         //States
-        public State GottenExportReportSettings { get; init; } = null!;
-        
-        public Event<ExportedReportSettingsDto> ReadyExportedReportSettingsData { get; init; } = null!;
+        public State ExportingReportSettings { get; init; } = null!;
+
+        public State ExportingUserWorklogs { get; init; } = null!;
+
+        public State MakingPdfRenderData { get; init; } = null!;
+
+        public State PackingDocsPackage { get; init; } = null!;
+
+        public State PackedDocsPackage { get; init; } = null!;
+
+        public Event<ReportGenerationRequest> GenerateReport { get; init; } = null!;
+        public Event<ExportedReportSettingsDto> ReadyReportSettingsData { get; init; } = null!;
         public Event<UserWorklogInfoDto> ReadyUserWorklogData { get; init; } = null!;
         public Event<PdfRenderedDocsDto> ReadyPdfRenderData { get; init; } = null!;
         public Event<DocsPackageInfoDto> ReadyDocsPackageData { get; init; } = null!;
