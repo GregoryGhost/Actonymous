@@ -20,17 +20,19 @@
     public sealed class ReportGenerationStateMachine : MassTransitStateMachine<ReportGenerationSagaState>
     {
         private readonly ILogger<ReportGenerationStateMachine> _logger;
-        
+
         public ReportGenerationStateMachine(ILogger<ReportGenerationStateMachine> logger)
         {
             _logger = logger;
             InstanceState(x => x.CurrentState);
-            Event(() => GenerateReport, 
-                x => 
+            Event(
+                () => GenerateReport,
+                x =>
                     x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.)
                      .SelectId(y => NewId.NextGuid()));
-            Event(() => ReadyReportSettingsData, 
-                x => 
+            Event(
+                () => ReadyReportSettingsData,
+                x =>
                     x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RestaurantId)
                      .SelectId(y => NewId.NextGuid()));
             Event(
@@ -60,23 +62,25 @@
                     .Then(
                         x =>
                         {
-                            if (!x.TryGetPayload(out SagaConsumeContext<ReportGenerationSagaState, ReportGenerationRequest>? payload))
+                            if (!x.TryGetPayload(
+                                    out SagaConsumeContext<ReportGenerationSagaState, ReportGenerationRequest>? payload))
                                 throw new Exception("Unable to retrieve required payload for callback data.");
 
                             Debug.Assert(payload != null, nameof(payload) + " != null");
-                            
+
                             x.Saga.RequestId = payload.RequestId;
                             x.Saga.ResponseAddress = payload.ResponseAddress;
                             x.Saga.RestaurantId = payload.Message.RestaurantId;
                         })
-                    .Request(ExportReportSettingsRequest,
+                    .Request(
+                        ExportReportSettingsRequest,
                         x =>
                         {
                             var data = new ExportingReportSettingsDto
                             {
                                 //TOOD: init fields
                             };
-                            
+
                             return x.Init<ExportingReportSettingsDto>(data);
                         })
                     .TransitionTo(ExportingReportSettings)
@@ -85,134 +89,141 @@
             During(
                 ExportingReportSettings,
                 When(ReadyReportSettingsData)
-                    .Request(GetUserWorklogsRequest,
+                    .Request(
+                        GetUserWorklogsRequest,
                         x =>
                         {
                             var data = new UserWorklogDto
                             {
                                 //TODO: init fields
                             };
-                            
+
                             return x.Init<UserWorklogDto>(data);
                         })
                     .TransitionTo(ExportingUserWorklogs)
             );
-            
+
             During(
                 ExportingUserWorklogs,
                 When(ReadyUserWorklogData)
-                    .Request(GetDocsReportRequest,
+                    .Request(
+                        GetDocsReportRequest,
                         x =>
                         {
-                            var data = new UserReportingDataDto()
+                            var data = new UserReportingDataDto
                             {
                                 //TODO: init fields
                             };
-                            
+
                             return x.Init<UserReportingDataDto>(data);
                         })
                     .TransitionTo(GetDocsReportRequest.Pending)
             );
-            
+
             During(
                 GetDocsReportRequest.Pending,
                 When(GetDocsReportRequest.Completed)
-                    .Request(GetPdfRenderRequest,
+                    .Request(
+                        GetPdfRenderRequest,
                         x =>
                         {
-                            var data = new PdfRenderDto()
+                            var data = new PdfRenderDto
                             {
                                 //TODO: init fields
                             };
-                            
+
                             return x.Init<PdfRenderDto>(data);
                         })
-                    .TransitionTo(MakingPdfRenderData)
+                    .TransitionTo(MakingPdfRenderData),
+                When(GetDocsReportRequest.Faulted)
+                    .ThenAsync(
+                        async context =>
+                        {
+                            const string ErrorOnGetDocsReport = "Error on get docs report.";
+                            var error = GetFormattedError(ErrorOnGetDocsReport, context);
+                            await RespondFromSagaAsync(context, error);
+                        })
+                    .TransitionTo(Failed),
+                When(GetDocsReportRequest.TimeoutExpired)
+                    .ThenAsync(async context =>
+                    {
+                        await RespondFromSagaAsync(context, "Timeout expired on get docs report.");
+                    })
+                    .TransitionTo(Failed)
             );
-            
+
             During(
                 MakingPdfRenderData,
                 When(ReadyPdfRenderData)
-                    .Request(GetDocsPackageRequest,
+                    .Request(
+                        GetDocsPackageRequest,
                         x =>
                         {
                             var data = new DocsPackageDto
                             {
                                 //TODO: init fields
                             };
-                            
+
                             return x.Init<DocsPackageDto>(data);
                         })
                     .TransitionTo(PackingDocsPackage)
             );
-            
+
             During(
                 PackingDocsPackage,
                 When(ReadyDocsPackageData)
-                    .TransitionTo(PackedDocsPackage)
-            );
-
-            During(
-                PackedDocsPackage,
-                When(ReadyDocsPackageData)
                     .ThenAsync(async context => { await RespondFromSagaAsync(context, string.Empty); })
+                    .TransitionTo(PackedDocsPackage)
                     .Finalize()
             );
         }
 
-        //States
         public State ExportingReportSettings { get; init; } = null!;
 
         public State ExportingUserWorklogs { get; init; } = null!;
 
-        public State MakingPdfRenderData { get; init; } = null!;
+        public State Failed { get; init; } = null!;
 
-        public State PackingDocsPackage { get; init; } = null!;
+        public Request<ReportGenerationSagaState, ExportingReportSettingsDto, Empty> ExportReportSettingsRequest { get; init; } =
+            null!;
+
+        public Event<ReportGenerationRequest> GenerateReport { get; init; } = null!;
+
+        public Request<ReportGenerationSagaState, DocsPackageDto, Empty> GetDocsPackageRequest { get; init; } = null!;
+
+        public Request<ReportGenerationSagaState, UserReportingDataDto, ReportDocsInfoDto> GetDocsReportRequest { get; init; } =
+            null!;
+
+        public Request<ReportGenerationSagaState, PdfRenderDto, Empty> GetPdfRenderRequest { get; init; } = null!;
+
+        public Request<ReportGenerationSagaState, UserWorklogDto, Empty> GetUserWorklogsRequest { get; init; } = null!;
+
+        public State MakingPdfRenderData { get; init; } = null!;
 
         public State PackedDocsPackage { get; init; } = null!;
 
-        public Event<ReportGenerationRequest> GenerateReport { get; init; } = null!;
-        public Event<ExportedReportSettingsDto> ReadyReportSettingsData { get; init; } = null!;
-        public Event<UserWorklogInfoDto> ReadyUserWorklogData { get; init; } = null!;
-        public Event<PdfRenderedDocsDto> ReadyPdfRenderData { get; init; } = null!;
+        public State PackingDocsPackage { get; init; } = null!;
+
         public Event<DocsPackageInfoDto> ReadyDocsPackageData { get; init; } = null!;
 
-        public Request<ReportGenerationSagaState, ExportingReportSettingsDto, Empty> ExportReportSettingsRequest
+        public Event<PdfRenderedDocsDto> ReadyPdfRenderData { get; init; } = null!;
+
+        public Event<ExportedReportSettingsDto> ReadyReportSettingsData { get; init; } = null!;
+
+        public Event<UserWorklogInfoDto> ReadyUserWorklogData { get; init; } = null!;
+
+        private static string GetFormattedError<T>(string error, ConsumeContext<Fault<T>> context)
         {
-            get;
-            init;
-        } = null!;
-        
-        public Request<ReportGenerationSagaState, UserWorklogDto, Empty> GetUserWorklogsRequest
-        {
-            get;
-            init;
-        } = null!;
-        
-        public Request<ReportGenerationSagaState, UserReportingDataDto, ReportDocsInfoDto> GetDocsReportRequest
-        {
-            get;
-            init;
-        } = null!;
-        
-        public Request<ReportGenerationSagaState, PdfRenderDto, Empty> GetPdfRenderRequest
-        {
-            get;
-            init;
-        } = null!;
-        
-        public Request<ReportGenerationSagaState, DocsPackageDto, Empty> GetDocsPackageRequest
-        {
-            get;
-            init;
-        } = null!;
-        
+            var errors = string.Join("; ", context.Message.Exceptions.Select(x => x.Message));
+            var formattedError = $"{error}{errors}";
+
+            return formattedError;
+        }
+
         private static async Task RespondFromSagaAsync(SagaConsumeContext<ReportGenerationSagaState> context, string error)
         {
             if (context.Saga.ResponseAddress is null)
-            {
                 throw new Exception($"Provide {context.Saga.ResponseAddress} to send data to endpoint.");
-            }
             var endpoint = await context.GetSendEndpoint(context.Saga.ResponseAddress);
             await endpoint.Send(
                 new ReportGenerationResponse
