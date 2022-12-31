@@ -1,6 +1,9 @@
 ﻿namespace Actonymous.API.ReportGenerationSaga.Services;
 
 //TODO: remove the project reference from this project
+using System;
+using System.Threading.Tasks;
+
 using Actonymous.API.Gateway.Settings.ExportReport.Domain.DTOs;
 
 using JetBrains.Annotations;

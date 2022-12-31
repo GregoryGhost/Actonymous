@@ -42,6 +42,15 @@
       <Generator>MSBuild:Compile</Generator>
       <Link>Protos\APIs\tex2pdf_renderer.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\..\..\protos\API\docs_packager.proto" AdditionalImportDirs="..\..\..\">
+      <GrpcServices>Client</GrpcServices>
+      <Access>Public</Access>
+      <ProtoCompile>True</ProtoCompile>
+      <CompileOutputs>True</CompileOutputs>
+      <OutputDir>obj\Debug\net6.0\</OutputDir>
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Protos\APIs\docs_packager.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\..\..\protos\Common\*.proto">
       <GrpcServices>Both</GrpcServices>
       <Access>Public</Access>

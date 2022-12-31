@@ -1,28 +1,32 @@
 ﻿namespace Actonymous.API.ReportGenerationSaga.Services;
 
+using System.Threading.Tasks;
+
 using Grpc.Core;
 
 using JetBrains.Annotations;
 
+using Tex2PdfRenderer.V1;
+
 using MassTransit;
 
 [UsedImplicitly]
-public sealed class PdfRenderer: IConsumer<PdfRenderDto>
+public sealed class PdfRenderer: IConsumer<TexPackageDto>
 {
-    private readonly  _pdfRendererClient;
+    private readonly Tex2PdfRenderer.Tex2PdfRendererClient _pdfRendererClient;
     
     private readonly IBus _bus;
 
-    public PdfRenderer( pdfRendererClient, IBus bus)
+    public PdfRenderer(IBus bus, Tex2PdfRenderer.Tex2PdfRendererClient pdfRendererClient)
     {
-        _pdfRendererClient = pdfRendererClient;
         _bus = bus;
+        _pdfRendererClient = pdfRendererClient;
     }
 
     /// <inheritdoc />
-    public async Task Consume(ConsumeContext<PdfRenderDto> context)
+    public async Task Consume(ConsumeContext<TexPackageDto> context)
     {
-        using var call = _pdfRendererClient.GetUserWorklogs();
+        using var call = _pdfRendererClient.Render();
         
         await WriteAsync(call, context.Message);
         await ReadAsync(call);
@@ -30,7 +34,7 @@ public sealed class PdfRenderer: IConsumer<PdfRenderDto>
         await call.RequestStream.CompleteAsync();
     }
 
-    private async Task ReadAsync(AsyncDuplexStreamingCall<PdfRenderDto, PdfRenderedDocsDto> call)
+    private async Task ReadAsync(AsyncDuplexStreamingCall<TexPackageDto, PdfPackageDto> call)
     {
         await foreach (var response in call.ResponseStream.ReadAllAsync())
         {
@@ -38,17 +42,9 @@ public sealed class PdfRenderer: IConsumer<PdfRenderDto>
         }
     }
 
-    private static async Task WriteAsync(AsyncDuplexStreamingCall<PdfRenderDto, PdfRenderedDocsDto> call,
-        PdfRenderDto data)
+    private static async Task WriteAsync(AsyncDuplexStreamingCall<TexPackageDto, PdfPackageDto> call,
+        TexPackageDto data)
     {
         await call.RequestStream.WriteAsync(data);
     }
-}
-
-public record PdfRenderedDocsDto
-{
-}
-
-public record PdfRenderDto
-{
 }

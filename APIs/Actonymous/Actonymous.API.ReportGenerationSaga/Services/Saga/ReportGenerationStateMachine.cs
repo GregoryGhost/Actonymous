@@ -1,10 +1,15 @@
 ﻿namespace Actonymous.API.ReportGenerationSaga.Services.Saga
 {
+    using System;
     using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     using Actonymous.API.ReportGenerationSaga.PublicDTOs.DTOs;
 
-    using global::DocsReporter.V1;
+    using DocsPackager.V1;
+
+    using DocsReporter.V1;
 
     using Google.Protobuf.WellKnownTypes;
 
@@ -13,6 +18,10 @@
     using JiraWorklogManager.V1;
 
     using MassTransit;
+
+    using Microsoft.Extensions.Logging;
+
+    using Tex2PdfRenderer.V1;
 
     using UserWorklogInfoDto = JiraWorklogManager.V1.UserWorklogInfoDto;
 
@@ -127,12 +136,12 @@
                         GetPdfRenderRequest,
                         x =>
                         {
-                            var data = new PdfRenderDto
+                            var data = new TexPackageDto
                             {
                                 //TODO: init fields
                             };
 
-                            return x.Init<PdfRenderDto>(data);
+                            return x.Init<TexPackageDto>(data);
                         })
                     .TransitionTo(MakingPdfRenderData),
                 When(GetDocsReportRequest.Faulted)
@@ -194,7 +203,7 @@
         public Request<ReportGenerationSagaState, UserReportingDataDto, ReportDocsInfoDto> GetDocsReportRequest { get; init; } =
             null!;
 
-        public Request<ReportGenerationSagaState, PdfRenderDto, Empty> GetPdfRenderRequest { get; init; } = null!;
+        public Request<ReportGenerationSagaState, TexPackageDto, Empty> GetPdfRenderRequest { get; init; } = null!;
 
         public Request<ReportGenerationSagaState, UserWorklogDto, Empty> GetUserWorklogsRequest { get; init; } = null!;
 
@@ -204,9 +213,9 @@
 
         public State PackingDocsPackage { get; init; } = null!;
 
-        public Event<DocsPackageInfoDto> ReadyDocsPackageData { get; init; } = null!;
+        public Event<SavedDocsPackageDto> ReadyDocsPackageData { get; init; } = null!;
 
-        public Event<PdfRenderedDocsDto> ReadyPdfRenderData { get; init; } = null!;
+        public Event<PdfPackageDto> ReadyPdfRenderData { get; init; } = null!;
 
         public Event<ExportedReportSettingsDto> ReadyReportSettingsData { get; init; } = null!;
 

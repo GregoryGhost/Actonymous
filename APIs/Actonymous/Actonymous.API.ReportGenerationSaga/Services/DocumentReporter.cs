@@ -1,17 +1,19 @@
 ﻿namespace Actonymous.API.ReportGenerationSaga.Services;
 
-using global::DocsReporter.V1;
+using System.Threading.Tasks;
+
+using DocsReporter.V1;
 
 using JetBrains.Annotations;
 
 using MassTransit;
 
 [UsedImplicitly]
-public sealed class DocsReporter : IConsumer<UserReportingDataDto>
+public sealed class DocumentReporter : IConsumer<UserReportingDataDto>
 {
-    private readonly global::DocsReporter.V1.DocsReporter.DocsReporterClient _docsReporterClient;
+    private readonly DocsReporter.DocsReporterClient _docsReporterClient;
 
-    public DocsReporter(global::DocsReporter.V1.DocsReporter.DocsReporterClient docsReporterClient)
+    public DocumentReporter(DocsReporter.DocsReporterClient docsReporterClient)
     {
         _docsReporterClient = docsReporterClient;
     }

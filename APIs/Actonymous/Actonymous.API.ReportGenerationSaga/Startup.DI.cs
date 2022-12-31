@@ -4,6 +4,8 @@ using System.Reflection;
 
 using Actonymous.Core.Module.Extensions;
 
+using DocsPackager.V1;
+
 using DocsReporter.V1;
 
 using Grpc.Net.ClientFactory;
@@ -11,6 +13,13 @@ using Grpc.Net.ClientFactory;
 using JiraWorklogManager.V1;
 
 using MassTransit;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+
+using ReportSettingsExporter.V1;
+
+using Tex2PdfRenderer.V1;
 
 public static class StartupDi
 {
@@ -32,13 +41,37 @@ public static class StartupDi
 
     private static void RegisterGrpcClients(WebApplicationBuilder builder)
     {
+        RegisterReportSettingsExporterClient(builder);
         RegisterJiraWorklogManagerClient(builder);
         RegisterDocsReporterClient(builder);
+        RegisterPdfRendererClient(builder);
+        RegisterDocsPackagerClient(builder);
     }
 
     private static void RegisterJiraWorklogManagerClient(WebApplicationBuilder builder)
     {
         builder.Services.AddGrpcClient<JiraWorklogManager.JiraWorklogManagerClient>(SetJiraWorklogManagerClientOptions)
+               .ConfigureChannel(
+                   options => { options.UnsafeUseInsecureChannelCallCredentials = true; });
+    }
+    
+    private static void RegisterReportSettingsExporterClient(WebApplicationBuilder builder)
+    {
+        builder.Services.AddGrpcClient<ReportSettingsExporter.ReportSettingsExporterClient>(SetReportSettingsExporterClientOptions)
+               .ConfigureChannel(
+                   options => { options.UnsafeUseInsecureChannelCallCredentials = true; });
+    }
+    
+    private static void RegisterDocsPackagerClient(WebApplicationBuilder builder)
+    {
+        builder.Services.AddGrpcClient<DocsPackager.DocsPackagerClient>(SetDocsPackagerClientOptions)
+               .ConfigureChannel(
+                   options => { options.UnsafeUseInsecureChannelCallCredentials = true; });
+    }
+    
+    private static void RegisterPdfRendererClient(WebApplicationBuilder builder)
+    {
+        builder.Services.AddGrpcClient<Tex2PdfRenderer.Tex2PdfRendererClient>(SetPdfRendererClientOptions)
                .ConfigureChannel(
                    options => { options.UnsafeUseInsecureChannelCallCredentials = true; });
     }
@@ -95,6 +128,21 @@ public static class StartupDi
     private static void SetDocsReporterClientOptions(GrpcClientFactoryOptions options)
     {
         StartupDiHelper.SetClientOptions("DOCS_REPORTER_ADDRESS", options);
+    }
+    
+    private static void SetDocsPackagerClientOptions(GrpcClientFactoryOptions options)
+    {
+        StartupDiHelper.SetClientOptions("DOCS_PACKAGER_ADDRESS", options);
+    }
+    
+    private static void SetReportSettingsExporterClientOptions(GrpcClientFactoryOptions options)
+    {
+        StartupDiHelper.SetClientOptions("REPORT_SETTINGS_EXPORTER_ADDRESS", options);
+    }
+    
+    private static void SetPdfRendererClientOptions(GrpcClientFactoryOptions options)
+    {
+        StartupDiHelper.SetClientOptions("TEX2PDF_RENDERER_ADDRESS", options);
     }
 
     private static void SetJiraWorklogManagerClientOptions(GrpcClientFactoryOptions options)
