@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package tex2pdf_renderer.v1;
+
+// Converter TEX files to PDF files.
+service Tex2PdfRenderer {
+  // Render TEX files to PDF files.
+  rpc Render(stream TexPackageDto) returns (stream PdfPackageDto);
+}
+
+// TEX package with files.
+message TexPackageDto {
+  //  TODO: describe fields
+}
+
+// Rendered TEX files to PDF files.
+message PdfPackageDto {
+  //  TODO: describe fields
+}

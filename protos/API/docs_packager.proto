@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package docs_packager.v1;
+
+// Docs packager which saves documents.
+service DocsPackager {
+  rpc SavePackage(stream SavingDocsPackageDto) returns (stream SavedDocsPackageDto);
+  
+  rpc GetPackage(stream GettingDocsPackageDto) returns (stream DocsPackageDto);
+}
+
+// Docs package to save.
+message SavingDocsPackageDto {
+  //  TODO: describe fields
+}
+
+// Docs package to get.
+message GettingDocsPackageDto {
+  //  TODO: describe fields
+}
+
+// Docs package info.
+message DocsPackageDto {
+  //  TODO: describe fields
+}
+
+// Saved package info.
+message SavedDocsPackageDto {
+  // Saved package id.
+  fixed64 id = 1;
+  
+  // Size of saved package.
+  uint32 size = 2;
+}

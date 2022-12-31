@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package report_settings_exporter.v1;
+
+import "google/protobuf/empty.proto";
+
+// The report settings exporter.
+service ReportSettingsExporter {
+  // Get saved a report settings.
+  rpc GetSettings(stream google.protobuf.Empty) returns (stream ReportSettingsDto);
+  
+  // Save a report settings.
+  rpc SaveSettings(SavingReportSettingsDto) returns (SavedReportSettingsDto);
+}
+
+// Report settings info.
+message ReportSettingsDto {
+  //  TODO: describe fields
+}
+
+// Report settings info to save.
+message SavingReportSettingsDto {
+//  TODO: describe fields
+}
+
+// Saved report settings info.
+message SavedReportSettingsDto {
+  // Saved report settings id.
+  fixed64 id = 1;
+}
