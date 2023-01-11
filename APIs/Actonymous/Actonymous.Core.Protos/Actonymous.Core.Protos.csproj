@@ -25,7 +25,7 @@
       <Link>Protos\APIs\docs_reporter.proto</Link>
     </Protobuf>
     <Protobuf Include="..\..\..\protos\API\report_settings_exporter.proto" AdditionalImportDirs="..\..\..\">
-      <GrpcServices>Client</GrpcServices>
+      <GrpcServices>Both</GrpcServices>
       <Access>Public</Access>
       <ProtoCompile>True</ProtoCompile>
       <CompileOutputs>True</CompileOutputs>
