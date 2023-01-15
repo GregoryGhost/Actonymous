@@ -1,8 +1,7 @@
-namespace Actonymous.API.Gateway.Settings.ExportReport.Domain.Services;
+namespace Actonymous.API.ReportSettingsExporter.Domain.Services;
 
-using Actonymous.API.Gateway.Settings.ExportReport.DAL.Entities;
-using Actonymous.API.Gateway.Settings.ExportReport.Domain.DTOs;
-
+using Actonymous.API.ReportSettingsExporter.DAL.Entities;
+using Actonymous.API.ReportSettingsExporter.Domain.DTOs;
 
 public class Mapper
 {

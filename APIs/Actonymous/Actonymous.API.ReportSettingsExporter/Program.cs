@@ -1,4 +1,5 @@
 using Actonymous.API.ReportSettingsExporter.DAL;
+using Actonymous.API.ReportSettingsExporter.Domain.Services;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,4 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(
         connectionString,
         b => b.MigrationsAssembly(nameof(Actonymous.API.ReportSettingsExporter.Migrations))));
+
+builder.Services.AddSingleton<IReportSettingsExporterDataService, ExportReportSettingsService>();
+
 app.Run();

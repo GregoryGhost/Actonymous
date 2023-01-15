@@ -1,4 +1,4 @@
-namespace Actonymous.API.Gateway.Settings.ExportReport.Domain.DTOs;
+namespace Actonymous.API.ReportSettingsExporter.Domain.DTOs;
 
 using JetBrains.Annotations;
 

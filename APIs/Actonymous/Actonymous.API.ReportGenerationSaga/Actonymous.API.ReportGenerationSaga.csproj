@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Actonymous.API.Gateway.Settings.ExportReport.Domain\Actonymous.API.Gateway.Settings.ExportReport.Domain.csproj" />
+      <ProjectReference Include="..\Actonymous.API.ReportSettingsExporter.Domain\Actonymous.API.ReportSettingsExporter.Domain.csproj" />
       <ProjectReference Include="..\Actonymous.API.ReportGenerationSaga.PublicDTOs\Actonymous.API.ReportGenerationSaga.PublicDTOs.csproj" />
       <ProjectReference Include="..\Actonymous.Core.Module\Actonymous.Core.Module.csproj" />
       <ProjectReference Include="..\Actonymous.Core.Protos\Actonymous.Core.Protos.csproj" />

@@ -5,10 +5,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>Nullable</WarningsAsErrors>
+        <RootNamespace>Actonymous.API.ReportSettingsExporter.Domain</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Actonymous.API.Gateway.Settings.ExportReport.DAL\Actonymous.API.Gateway.Settings.ExportReport.DAL.csproj" />
+      <ProjectReference Include="..\Actonymous.API.ReportSettingsExporter.DAL\Actonymous.API.ReportSettingsExporter.DAL.csproj" />
     </ItemGroup>
 
 </Project>

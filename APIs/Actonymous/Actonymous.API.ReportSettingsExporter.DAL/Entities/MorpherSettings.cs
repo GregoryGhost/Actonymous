@@ -1,6 +1,5 @@
-namespace Actonymous.API.Gateway.Settings.ExportReport.DAL.Entities;
+namespace Actonymous.API.ReportSettingsExporter.DAL.Entities;
 
-using Actonymous.Core.DAL;
 using Actonymous.Core.DAL.BaseEntities;
 
 using JetBrains.Annotations;

@@ -1,5 +1,7 @@
 ﻿namespace Actonymous.API.ReportSettingsExporter.Services;
 
+using Actonymous.API.ReportSettingsExporter.Domain.Services;
+
 using global::ReportSettingsExporter.V1;
 
 using Google.Protobuf.WellKnownTypes;
@@ -11,15 +13,31 @@ using JetBrains.Annotations;
 [PublicAPI]
 public sealed class ReportSettingsExporterService : ReportSettingsExporter.ReportSettingsExporterBase
 {
-    /// <inheritdoc />
-    public override Task GetSettings(IAsyncStreamReader<Empty> requestStream, IServerStreamWriter<ReportSettingsDto> responseStream, ServerCallContext context)
+    private readonly IReportSettingsExporterDataService _dataService;
+
+    public ReportSettingsExporterService(IReportSettingsExporterDataService dataService)
     {
-        return base.GetSettings(requestStream, responseStream, context);
+        _dataService = dataService;
     }
 
     /// <inheritdoc />
-    public override Task<SavedReportSettingsDto> SaveSettings(SavingReportSettingsDto request, ServerCallContext context)
+    public override async Task GetSettings(IAsyncStreamReader<Empty> requestStream, IServerStreamWriter<ReportSettingsDto> responseStream, ServerCallContext context)
     {
-        return base.SaveSettings(request, context);
+        await foreach (var _ in requestStream.ReadAllAsync(context.CancellationToken))
+        {
+            var settings = await _dataService.GetAsync();
+            await NotifyGettingSettingsEndAsync(responseStream, settings);
+        }
+    }
+
+    private static async Task NotifyGettingSettingsEndAsync(IServerStreamWriter<ReportSettingsDto> responseStream, ReportSettingsDto settings)
+    {
+        await responseStream.WriteAsync(settings);
+    }
+
+    /// <inheritdoc />
+    public override async Task<SavedReportSettingsDto> SaveSettings(SavingReportSettingsDto request, ServerCallContext context)
+    {
+        return await _dataService.SaveAsync(request);
     }
 }

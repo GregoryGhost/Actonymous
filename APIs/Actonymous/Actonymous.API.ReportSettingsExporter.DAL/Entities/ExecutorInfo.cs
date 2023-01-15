@@ -1,4 +1,4 @@
-namespace Actonymous.API.Gateway.Settings.ExportReport.DAL.Entities;
+namespace Actonymous.API.ReportSettingsExporter.DAL.Entities;
 
 using Actonymous.Core.DAL.BaseEntities;
 

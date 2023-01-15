@@ -1,10 +1,11 @@
-namespace Actonymous.API.Gateway.Settings.ExportReport.Domain.DTOs;
+namespace Actonymous.API.ReportSettingsExporter.DAL.Entities;
 
+using Actonymous.Core.DAL.BaseEntities;
 
 using JetBrains.Annotations;
 
-[PublicAPI]
-public sealed record JiraCredentialsDto
+[UsedImplicitly]
+public class JiraCredentials : BaseEntity
 {
     public string Login { get; set; } = null!;
 

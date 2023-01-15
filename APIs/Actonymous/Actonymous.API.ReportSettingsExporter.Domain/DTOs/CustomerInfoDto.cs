@@ -1,11 +1,9 @@
-namespace Actonymous.API.Gateway.Settings.ExportReport.DAL.Entities;
-
-using Actonymous.Core.DAL.BaseEntities;
+namespace Actonymous.API.ReportSettingsExporter.Domain.DTOs;
 
 using JetBrains.Annotations;
 
-[UsedImplicitly]
-public class CustomerInfo : BaseEntity
+[PublicAPI]
+public sealed record CustomerInfoDto
 {
     public string CompanyName { get; set; } = null!;
 
