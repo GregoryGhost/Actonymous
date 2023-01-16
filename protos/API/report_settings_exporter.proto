@@ -3,6 +3,8 @@ syntax = "proto3";
 package report_settings_exporter.v1;
 
 import "google/protobuf/empty.proto";
+import "protos/Common/custom_types.proto";
+import "google/protobuf/timestamp.proto";
 
 // The report settings exporter.
 service ReportSettingsExporter {
@@ -15,12 +17,65 @@ service ReportSettingsExporter {
 
 // Report settings info.
 message ReportSettingsDto {
-  //  TODO: describe fields
+  fixed64 id = 1;
+
+  JiraCredentialsDto jira_credentials = 2;
+
+  TemplateSettingsDto template_settings = 3;
+
+  MorpherSettingsDto morpher_settings = 4;
+}
+
+message JiraCredentialsDto {
+  string login = 1;
+  string password = 2;
+  string server_address = 3;
+}
+
+message TemplateSettingsDto {
+  CustomerInfoDto customer_info = 1;
+  ExecutorInfoDto executor_info = 2;
+  ContractInfoDto contract_info = 3;
+  TemplateFilesInfoDto template_files_info = 4;
+}
+
+message MorpherSettingsDto {
+  string access_token = 1;
+}
+
+message CustomerInfoDto {
+  string company_name = 1;
+  string header_fullname = 2;
+  string header_position = 3;
+}
+
+message ExecutorInfoDto { 
+  string company_name = 1;
+  string header_fullname = 2;
+  string header_position = 3;
+  CustomTypes.DecimalValue rate_per_hour = 4;
+}
+
+message ContractInfoDto {
+  string contract_number = 1;
+  google.protobuf.Timestamp approval_date = 2;
+  bytes contract_file = 3;
+}
+
+message TemplateFilesInfoDto {
+  bytes act_template_file = 1;
+  bytes task_template_file = 2;
 }
 
 // Report settings info to save.
 message SavingReportSettingsDto {
-//  TODO: describe fields
+  fixed64 id = 1;
+
+  JiraCredentialsDto jira_credentials = 2;
+
+  TemplateSettingsDto template_settings = 3;
+
+  MorpherSettingsDto morpher_settings = 4;
 }
 
 // Saved report settings info.

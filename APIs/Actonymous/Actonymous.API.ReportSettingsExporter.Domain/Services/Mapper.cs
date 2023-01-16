@@ -1,19 +1,24 @@
 namespace Actonymous.API.ReportSettingsExporter.Domain.Services;
 
 using Actonymous.API.ReportSettingsExporter.DAL.Entities;
-using Actonymous.API.ReportSettingsExporter.Domain.DTOs;
+
+using global::ReportSettingsExporter.V1;
+
+using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 
 public class Mapper
 {
-    public ExportReportSettings MapToEntityExportReportSettings(ExportReportSettingsDto dto)
+    public ExportReportSettings MapToEntityExportReportSettings(SavingReportSettingsDto dto)
     {
         var jiraCredentials = GetJiraCredentialsEntity(dto.JiraCredentials);
         var templateSettings = GetTemplateSettingsEntity(dto.TemplateSettings);
         var mopherSettings = GetMopherSettingsEntity(dto.MorpherSettings);
+        var settingsId = (long)dto.Id;
         
         return new ExportReportSettings
         {
-            Id = dto.Id,
+            Id = settingsId,
             JiraCredentials = jiraCredentials,
             TemplateSettings = templateSettings,
             MorpherSettings = mopherSettings
@@ -31,10 +36,10 @@ public class Mapper
 
     private static TemplateSettings GetTemplateSettingsEntity(TemplateSettingsDto templateSettingsDto)
     {
-        var customerInfo = GetCustomerInfoEntity(templateSettingsDto.CustomerInfoDto);
-        var executorInfo = GetExecutorInfoEntity(templateSettingsDto.ExecutorInfoDto);
-        var contractInfo = GetContractInfoEntity(templateSettingsDto.ContractInfoDto);
-        var templateFilesInfo = GetTemplateFilesInfoEntity(templateSettingsDto.TemplateFilesInfoDto);
+        var customerInfo = GetCustomerInfoEntity(templateSettingsDto.CustomerInfo);
+        var executorInfo = GetExecutorInfoEntity(templateSettingsDto.ExecutorInfo);
+        var contractInfo = GetContractInfoEntity(templateSettingsDto.ContractInfo);
+        var templateFilesInfo = GetTemplateFilesInfoEntity(templateSettingsDto.TemplateFilesInfo);
 
         var templateSettings = new TemplateSettings
         {
@@ -50,22 +55,28 @@ public class Mapper
 
     private static TemplateFilesInfo GetTemplateFilesInfoEntity(TemplateFilesInfoDto templateFilesInfoDto)
     {
+        var actTemplateFile = templateFilesInfoDto.ActTemplateFile.ToByteArray();
+        var taskTemplateFile = templateFilesInfoDto.TaskTemplateFile.ToByteArray();
+        
         return new TemplateFilesInfo
         {
             Id = 0,
-            ActTemplateFile = templateFilesInfoDto.ActTemplateFile,
-            TaskTemplateFile = templateFilesInfoDto.TaskTemplateFile
+            ActTemplateFile = actTemplateFile,
+            TaskTemplateFile = taskTemplateFile
         };
     }
 
     private static ContractInfo GetContractInfoEntity(ContractInfoDto contractInfoDto)
     {
+        var approvalDate = contractInfoDto.ApprovalDate.ToDateTime();
+        var contractFile = contractInfoDto.ContractFile.ToByteArray();
+        
         return new ContractInfo
         {
             Id = 0,
             ContractNumber = contractInfoDto.ContractNumber,
-            ApprovalDate = contractInfoDto.ApprovalDate,
-            ContractFile = contractInfoDto.ContractFile
+            ApprovalDate = approvalDate,
+            ContractFile = contractFile
         };
     }
 
@@ -103,15 +114,16 @@ public class Mapper
         };
     }
 
-    public ExportReportSettingsDto MapFromEntityExportReportSettings(ExportReportSettings entity)
+    public ReportSettingsDto MapFromEntityExportReportSettings(ExportReportSettings entity)
     {
         var jiraCredentials = GetJiraCredentialsDto(entity.JiraCredentials);
         var templateSettings = GetTemplateSettingsDto(entity.TemplateSettings);
         var mopherSettings = GetMopherSettingsDto(entity.MorpherSettings);
+        var settingsId = (ulong)entity.Id;
         
-        return new ExportReportSettingsDto
+        return new ReportSettingsDto
         {
-            Id = entity.Id,
+            Id = settingsId,
             JiraCredentials = jiraCredentials,
             TemplateSettings = templateSettings,
             MorpherSettings = mopherSettings
@@ -135,31 +147,37 @@ public class Mapper
 
         var templateSettingsDto = new TemplateSettingsDto
         {
-            CustomerInfoDto = customerInfoDto,
-            ExecutorInfoDto = executorInfoDto,
-            ContractInfoDto = contractInfoDto,
-            TemplateFilesInfoDto = templateFilesInfoDto
+            CustomerInfo = customerInfoDto,
+            ExecutorInfo = executorInfoDto,
+            ContractInfo = contractInfoDto,
+            TemplateFilesInfo = templateFilesInfoDto
         };
 
         return templateSettingsDto;
     }
 
-    private static TemplateFilesInfoDto GetTemplateFilesInfoDto(TemplateFilesInfo templateFilesInfoDto)
+    private static TemplateFilesInfoDto GetTemplateFilesInfoDto(TemplateFilesInfo templateFilesInfo)
     {
+        var actTemplateFile = ByteString.CopyFrom(templateFilesInfo.ActTemplateFile);
+        var taskTemplateFile = ByteString.CopyFrom(templateFilesInfo.TaskTemplateFile);
+        
         return new TemplateFilesInfoDto
         {
-            ActTemplateFile = templateFilesInfoDto.ActTemplateFile,
-            TaskTemplateFile = templateFilesInfoDto.TaskTemplateFile
+            ActTemplateFile = actTemplateFile,
+            TaskTemplateFile = taskTemplateFile
         };
     }
 
     private static ContractInfoDto GetContractInfoDto(ContractInfo contractInfoDto)
     {
+        var approvalDate = contractInfoDto.ApprovalDate.ToTimestamp();
+        var contractFile = ByteString.CopyFrom(contractInfoDto.ContractFile);
+        
         return new ContractInfoDto
         {
             ContractNumber = contractInfoDto.ContractNumber,
-            ApprovalDate = contractInfoDto.ApprovalDate,
-            ContractFile = contractInfoDto.ContractFile
+            ApprovalDate = approvalDate,
+            ContractFile = contractFile
         };
     }
 
