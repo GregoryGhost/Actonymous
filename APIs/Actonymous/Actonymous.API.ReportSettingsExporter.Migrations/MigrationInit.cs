@@ -3,6 +3,6 @@
 /// <summary>
 /// THIS NEED TO GENERATE Migration namespace.
 /// </summary>
-public class Migration
+public class MigrationInit
 {
 }

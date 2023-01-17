@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package report_settings_exporter.v1;
+package docs_report_settings_exporter.v1;
 
 import "google/protobuf/empty.proto";
 import "protos/Common/custom_types.proto";

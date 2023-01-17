@@ -1,8 +1,6 @@
 ﻿namespace Actonymous.API.ReportSettingsExporter.Services;
 
-using Actonymous.API.ReportSettingsExporter.Domain.Services;
-
-using global::ReportSettingsExporter.V1;
+using DocsReportSettingsExporter.V1;
 
 using Google.Protobuf.WellKnownTypes;
 

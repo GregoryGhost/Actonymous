@@ -1,6 +1,6 @@
-namespace Actonymous.API.ReportSettingsExporter.Domain.Services;
+namespace Actonymous.API.ReportSettingsExporter.Services;
 
-using global::ReportSettingsExporter.V1;
+using DocsReportSettingsExporter.V1;
 
 public interface IReportSettingsExporterDataService
 {

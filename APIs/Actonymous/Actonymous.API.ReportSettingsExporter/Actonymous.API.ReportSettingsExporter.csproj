@@ -16,12 +16,10 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Actonymous.API.ReportSettingsExporter.DAL\Actonymous.API.ReportSettingsExporter.DAL.csproj" />
-      <ProjectReference Include="..\Actonymous.API.ReportSettingsExporter.Domain\Actonymous.API.ReportSettingsExporter.Domain.csproj" />
       <ProjectReference Include="..\Actonymous.API.ReportSettingsExporter.Migrations\Actonymous.API.ReportSettingsExporter.Migrations.csproj" />
       <ProjectReference Include="..\Actonymous.Core.Protos\Actonymous.Core.Protos.csproj" />
     </ItemGroup>

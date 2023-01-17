@@ -1,10 +1,9 @@
 using Actonymous.API.ReportSettingsExporter.DAL;
-using Actonymous.API.ReportSettingsExporter.Domain.Services;
+using Actonymous.API.ReportSettingsExporter.Services;
 
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
 
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
@@ -16,8 +15,15 @@ if (string.IsNullOrEmpty(connectionString))
 builder.Services.AddDbContext<AppDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(
         connectionString,
-        b => b.MigrationsAssembly(nameof(Actonymous.API.ReportSettingsExporter.Migrations))));
+        b => b.MigrationsAssembly(typeof(Actonymous.API.ReportSettingsExporter.Migrations.MigrationInit).Namespace)));
 
-builder.Services.AddSingleton<IReportSettingsExporterDataService, ExportReportSettingsService>();
+builder.Services.AddSingleton<Mapper>();
+builder.Services.AddScoped<IReportSettingsExporterDataService, ExportReportSettingsService>();
+
+var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+db.Database.Migrate();
 
 app.Run();
