@@ -1,29 +1,34 @@
 namespace Actonymous.API.Gateway.Settings.ExportReport.Services;
 
 using Actonymous.API.Gateway.Settings.ExportReport.DTOs;
-using Actonymous.API.ReportSettingsExporter.Domain.DTOs;
+
+using DocsReportSettingsExporter.V1;
 
 using JetBrains.Annotations;
 
 [PublicAPI]
 public class Mapper
 {
-    public ExportReportSettingsDto MapSavingExportReportSettingsEntityDto(SavingExportReportSettingsDto dto)
+    public SavingReportSettingsDto MapSavingExportReportSettingsEntityDto(SavingExportReportSettingsDto dto)
     {
-        return new ExportReportSettingsDto
+        var settingsId = (ulong) dto.Id;
+        
+        return new SavingReportSettingsDto
         {
-            Id = dto.Id,
+            Id = settingsId,
             JiraCredentials = dto.JiraCredentials,
             TemplateSettings = dto.TemplateSettings,
             MorpherSettings = dto.MorpherSettings
         };
     }
     
-    public SavedExportReportSettingsDto MapSavedExportReportSettingsDto(ExportReportSettingsDto dto)
+    public SavedExportReportSettingsDto MapSavedExportReportSettingsDto(ReportSettingsDto dto)
     {
+        var settingsId = (long) dto.Id;
+        
         return new SavedExportReportSettingsDto
         {
-            Id = dto.Id,
+            Id = settingsId,
             JiraCredentials = dto.JiraCredentials,
             TemplateSettings = dto.TemplateSettings,
             MorpherSettings = dto.MorpherSettings

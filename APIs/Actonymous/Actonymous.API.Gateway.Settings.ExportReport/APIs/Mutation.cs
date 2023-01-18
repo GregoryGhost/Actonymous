@@ -1,8 +1,7 @@
 ﻿namespace Actonymous.API.Gateway.Settings.ExportReport.APIs;
 
 using Actonymous.API.Gateway.Settings.ExportReport.DTOs;
-using Actonymous.API.Gateway.Settings.ExportReport.Services;
-using Actonymous.API.ReportSettingsExporter.Domain.Services;
+using Actonymous.API.ReportSettingsExporter.Services;
 
 using HotChocolate.Types;
 

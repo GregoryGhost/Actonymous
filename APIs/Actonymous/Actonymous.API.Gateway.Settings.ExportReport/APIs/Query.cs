@@ -1,8 +1,7 @@
 ﻿namespace Actonymous.API.Gateway.Settings.ExportReport.APIs;
 
 using Actonymous.API.Gateway.Settings.ExportReport.DTOs;
-using Actonymous.API.Gateway.Shared.Services.Pagination;
-using Actonymous.API.ReportSettingsExporter.Domain.Services;
+using Actonymous.API.ReportSettingsExporter.Services;
 using Actonymous.Core.DAL.DTOs;
 
 using HotChocolate.Types;
@@ -28,11 +27,7 @@ public class Query
     [UseOffsetPaging]
     public async Task<SavedExportReportSettingsDto?> GetExportReportSettings(BaseRecordDto dto, CancellationToken cancellationToken)
     {
-        var foundRecord = await _exportReportSettingsService.GetAsync(dto);
-        if (foundRecord is null)
-        {
-            return null;
-        }
+        var foundRecord = await _exportReportSettingsService.GetAsync();
         var mapped = _mapper.MapSavedExportReportSettingsDto(foundRecord);
 
         return mapped;

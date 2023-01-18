@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Actonymous.API.ReportSettingsExporter.Domain\Actonymous.API.ReportSettingsExporter.Domain.csproj" />
       <ProjectReference Include="..\Actonymous.API.Gateway.Shared\Actonymous.API.Gateway.Shared.csproj" />
+      <ProjectReference Include="..\Actonymous.API.ReportSettingsExporter\Actonymous.API.ReportSettingsExporter.csproj" />
       <ProjectReference Include="..\Actonymous.Core.Module\Actonymous.Core.Module.csproj" />
     </ItemGroup>
 
