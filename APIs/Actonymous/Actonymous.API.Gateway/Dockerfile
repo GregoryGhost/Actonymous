@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Itadakimasu.Core.Protos/Itadakimasu.Core.Protos.csproj", "Itadakimasu.Core.Protos/"]
+COPY ["Actonymous.Core.Protos/Itadakimasu.Core.Protos.csproj", "Actonymous.Core.Protos/"]
 COPY ["Actonymous.API.Gateway.Settings.ExportReport/Actonymous.API.Gateway.Settings.ExportReport.csproj", "Actonymous.API.Gateway.Settings.ExportReport/"]
 COPY ["Actonymous.API.Gateway.Settings.ExportReport.DAL/Actonymous.API.Gateway.Settings.ExportReport.DAL.csproj", "Actonymous.API.Gateway.Settings.ExportReport.DAL/"]
 COPY ["Actonymous.API.Gateway.Settings.ExportReport.Domain/Actonymous.API.Gateway.Settings.ExportReport.Domain.csproj", "Actonymous.API.Gateway.Settings.ExportReport.Domain/"]

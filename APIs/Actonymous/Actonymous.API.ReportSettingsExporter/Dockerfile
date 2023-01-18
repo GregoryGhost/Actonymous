@@ -6,6 +6,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Actonymous.API.ReportSettingsExporter/Actonymous.API.ReportSettingsExporter.csproj", "Actonymous.API.ReportSettingsExporter/"]
+COPY ["Actonymous.API.ReportSettingsExporter.DAL/Actonymous.API.ReportSettingsExporter.DAL.csproj", "Actonymous.API.ReportSettingsExporter.DAL/"]
+COPY ["Actonymous.API.ReportSettingsExporter.Migrations/Actonymous.API.ReportSettingsExporter.Migrations.csproj", "Actonymous.API.ReportSettingsExporter.Migrations/"]
+COPY ["Actonymous.Core.Protos/Itadakimasu.Core.Protos.csproj", "Actonymous.Core.Protos/"]
 RUN dotnet restore "Actonymous.API.ReportSettingsExporter/Actonymous.API.ReportSettingsExporter.csproj"
 COPY . .
 WORKDIR "/src/Actonymous.API.ReportSettingsExporter"

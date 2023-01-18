@@ -12,6 +12,8 @@ services:
     depends_on:
       api_jira_worklog_manager:
         condition: service_started
+      api_docs_report_settings_exporter:
+        condition: service_started
       rabbitmq:
         condition: service_healthy
     build:
@@ -94,7 +96,26 @@ services:
       context: .
       dockerfile: ./APIs/DocsReporter/Dockerfile
     ports:
-      - "5218:80"
-      - "5219:443"
+      - "5220:80"
+      - "5221:443"
+    networks:
+      - api-network
+  
+  api_docs_report_settings_exporter:
+    # TODO: replace curl on dotnet tools for health checking
+    # healthcheck:
+    #   test: curl --silent --fail http://api_products:80/health || exit 1
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
+    build:
+      context: .
+      dockerfile: ./APIs/Actonymous/Actonymous.API.ReportSettingsExporter/Dockerfile
+    environment:
+      DB_CONNECTION_STRING: ${API_DOCS_REPORT_SETTINGS_EXPORTER_DB_CONNECTION_STRING}
+    ports:
+      - "5222:80"
+      - "5223:443"
     networks:
       - api-network
