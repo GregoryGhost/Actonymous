@@ -34,7 +34,7 @@
       <Link>Protos\APIs\report_settings_exporter.proto</Link>
     </Protobuf>
     <Protobuf Include="..\..\..\protos\API\tex2pdf_renderer.proto" AdditionalImportDirs="..\..\..\">
-      <GrpcServices>Client</GrpcServices>
+      <GrpcServices>Both</GrpcServices>
       <Access>Public</Access>
       <ProtoCompile>True</ProtoCompile>
       <CompileOutputs>True</CompileOutputs>
