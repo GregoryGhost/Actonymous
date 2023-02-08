@@ -43,7 +43,7 @@
       <Link>Protos\APIs\tex2pdf_renderer.proto</Link>
     </Protobuf>
     <Protobuf Include="..\..\..\protos\API\docs_packager.proto" AdditionalImportDirs="..\..\..\">
-      <GrpcServices>Client</GrpcServices>
+      <GrpcServices>Both</GrpcServices>
       <Access>Public</Access>
       <ProtoCompile>True</ProtoCompile>
       <CompileOutputs>True</CompileOutputs>
