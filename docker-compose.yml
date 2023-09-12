@@ -134,7 +134,7 @@ services:
     #   start_period: 30s
     build:
       context: .
-      dockerfile: ./APIs/Actonymous/Actonymous.API.DocsReporter/Dockerfile
+      dockerfile: ./APIs/Actonymous/Actonymous.API.DocsRenderer/Dockerfile
     ports:
       - "5224:80"
       - "5225:443"

@@ -1,5 +1,14 @@
-# How to work with JiraWorklogManager
-## Install gRPC tools
+# Actonymous
+It's a project about automating collection work information to produce documents.
+
+## How to run
+Open terminal in root project folder. Run docker compose file:
+>docker compose --env-file ./Configs/Envs/dev.env build
+
+>docker compose --env-file ./Configs/Envs/dev.env up
+
+## How to work with JiraWorklogManager
+### Install gRPC tools
 ```
 > python -m pip install grpcio
 > python -m pip install grpcio-tools
@@ -8,7 +17,7 @@
 [For more details](https://grpc.io/docs/languages/python/quickstart/)
 [For mor details mypy protobuff](https://github.com/nipunn1313/mypy-protobuf)
 
-## Generate gRPC code
+### Generate gRPC code
 Change current folder to the root project folder. After enter the next command:
 ```
 > py -m grpc_tools.protoc -I . --python_out=./APIs/JiraWorklogManager/jira_worklog_manager/generated/grpc --grpc_python_out=./APIs/JiraWorklogManager/jira_worklog_manager/generated/grpc ./protos/API/jira_worklog_manager.proto

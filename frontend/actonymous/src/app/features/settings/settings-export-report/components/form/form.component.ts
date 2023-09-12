@@ -32,7 +32,11 @@ export class FormComponent implements OnInit {
     this.data = null;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.data) {
+      this.pageForm.setValue(this.data);
+    }
+  }
 
   public submit(): void {
     this.pageForm.markAllAsTouched();

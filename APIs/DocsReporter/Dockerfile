@@ -9,7 +9,7 @@ RUN pip install grpcio
 RUN pip install grpcio-tools
 
 COPY ["docs-reporter-domain/", "docs-reporter-domain/"]
-COPY ["docs-reporter/", "docs-reporter/"]
+COPY ["docs_reporter/", "docs_reporter/"]
 
 RUN pip install ./docs-reporter-domain/
 RUN py -m grpc_tools.protoc -I . \
